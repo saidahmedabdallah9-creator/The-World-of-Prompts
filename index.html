@@ -1,0 +1,3381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استوديو البرومتات بالمصري — الغرفة المظلمة</title>
+  <meta name="description" content="مكتبة ومعمل تحميض البرومتات الاحترافية للصور الواقعية بالذكاء الاصطناعي باللهجة المصرية." />
+  <meta property="og:title" content="استوديو البرومتات بالمصري — الغرفة المظلمة" />
+  <meta property="og:description" content="مكتبة ومعمل تحميض البرومتات الاحترافية للصور الواقعية بالذكاء الاصطناعي باللهجة المصرية." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Reem+Kufi:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0907;
+      --surface: #16120E;
+      --surface-elevated: #1E1813;
+      --viewfinder-bg: #080605;
+      --border: #2A231B;
+      --border-hover: rgba(255, 162, 58, 0.4);
+      --text: #F2EBDD;
+      --text-muted: #A99C88;
+      --amber: #FFA23A;
+      --amber-hover: #FFB35C;
+      --amber-soft: rgba(255, 162, 58, 0.12);
+      --amber-glow: rgba(255, 122, 26, 0.12);
+      --teal: #3FB8A5;
+      --teal-soft: rgba(63, 184, 165, 0.14);
+      --danger: #E05A47;
+      --danger-soft: rgba(224, 90, 71, 0.12);
+      --header-bg: rgba(11, 9, 7, 0.88);
+      --sprocket-hole: #0B0907;
+      --film-strip-bg: #110E0A;
+      --shadow-card: 0 10px 28px rgba(0, 0, 0, 0.55);
+      --font-title: 'Reem Kufi', sans-serif;
+      --font-body: 'Cairo', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg: #F4EEE2;
+      --surface: #EBE3D3;
+      --surface-elevated: #E2D8C5;
+      --viewfinder-bg: #DFD5C2;
+      --border: #CFC2AE;
+      --border-hover: rgba(201, 102, 10, 0.4);
+      --text: #2A1F14;
+      --text-muted: #655645;
+      --amber: #C9660A;
+      --amber-hover: #AD5506;
+      --amber-soft: rgba(201, 102, 10, 0.12);
+      --amber-glow: rgba(201, 102, 10, 0.09);
+      --teal: #1E7E6E;
+      --teal-soft: rgba(30, 126, 110, 0.14);
+      --danger: #B93829;
+      --danger-soft: rgba(185, 56, 41, 0.1);
+      --header-bg: rgba(244, 238, 226, 0.9);
+      --sprocket-hole: #F4EEE2;
+      --film-strip-bg: #E4DAC8;
+      --shadow-card: 0 8px 22px rgba(42, 31, 20, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--amber) var(--surface);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--amber);
+      border-radius: 3px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Static Film-Grain Noise Overlay (3.5% opacity) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Fixed Safelight Radial Glow */
+    .safelight-glow {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 540px;
+      background: radial-gradient(circle at top right, var(--amber-glow) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Focus Rings: 2px amber with 3px offset on every interactive element */
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    a:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--amber) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Reading Progress Bar */
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+      z-index: 2000;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--amber);
+      box-shadow: 0 0 8px var(--amber);
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Brand Right Side */
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      text-align: right;
+      min-height: 44px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .aperture-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--amber);
+      box-shadow: 0 0 14px var(--amber-soft);
+      animation: apertureOnce 1.3s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+      flex-shrink: 0;
+    }
+    @keyframes apertureOnce {
+      0% { transform: rotate(0deg) scale(0.92); }
+      60% { transform: rotate(200deg) scale(1.04); }
+      100% { transform: rotate(180deg) scale(1); }
+    }
+    .logo-title {
+      font-family: var(--font-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .logo-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: block;
+      font-family: var(--font-body);
+    }
+
+    /* Loupe Search Field */
+    .loupe-search-wrapper {
+      flex: 1;
+      max-width: 540px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .loupe-icon {
+      position: absolute;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      color: var(--amber);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-input {
+      width: 100%;
+      min-height: 44px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 42px 8px 46px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+    .search-input:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px var(--amber-soft);
+      outline: none;
+    }
+    .search-kbd-chip {
+      position: absolute;
+      left: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 7px;
+      pointer-events: none;
+      line-height: 1.4;
+    }
+
+    /* Header Left Controls (Mobile Search Trigger + Exposure Dial Theme Toggle) */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .mobile-search-btn {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--amber);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .exposure-dial {
+      min-height: 44px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+      position: relative;
+    }
+    .exposure-dial:hover {
+      border-color: var(--amber);
+    }
+    .dial-wheel {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: var(--amber);
+    }
+    .exposure-dial[data-rotated="true"] .dial-wheel {
+      transform: rotate(180deg);
+    }
+
+    /* Mobile Full-Screen Search Overlay */
+    .mobile-search-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      z-index: 1500;
+      padding: 16px;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mobile-search-overlay.open {
+      display: flex;
+    }
+    .mobile-search-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mobile-search-close {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+      padding: 0 14px;
+      cursor: pointer;
+    }
+
+    /* FILM STRIP NAVIGATION */
+    .film-strip-nav {
+      position: sticky;
+      top: 69px;
+      z-index: 950;
+      background: var(--film-strip-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+    .sprocket-track {
+      height: 10px;
+      width: 100%;
+      background-image: repeating-linear-gradient(
+        to left,
+        transparent 0px,
+        transparent 12px,
+        var(--sprocket-hole) 12px,
+        var(--sprocket-hole) 22px,
+        transparent 22px,
+        transparent 30px
+      );
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      opacity: 0.85;
+    }
+    .film-strip-scroll {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      padding: 10px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+    .film-strip-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .film-frame-btn {
+      flex: 1 0 auto;
+      min-width: 132px;
+      min-height: 54px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 4px;
+      position: relative;
+      scroll-snap-align: center;
+      transition: transform 0.22s ease, border-color 0.22s ease, background-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+      opacity: 0.72;
+    }
+    .film-frame-btn:hover {
+      opacity: 0.95;
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+    .film-frame-btn.active {
+      opacity: 1;
+      background: var(--surface-elevated);
+      border-color: var(--amber);
+      color: var(--amber);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--amber-soft), inset 0 0 12px var(--amber-soft);
+    }
+    .frame-top-meta {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      direction: ltr;
+    }
+    .film-frame-btn.active .frame-top-meta {
+      color: var(--amber);
+    }
+    .frame-label-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .frame-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      stroke-width: 1.8;
+    }
+
+    /* Mobile Bottom Film Bar + More Drawer */
+    .mobile-more-btn {
+      display: none;
+    }
+    .mobile-more-drawer {
+      display: none;
+      position: fixed;
+      bottom: 76px;
+      left: 12px;
+      right: 12px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--amber);
+      border-radius: 12px;
+      padding: 12px;
+      z-index: 1200;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.75);
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .mobile-more-drawer.open {
+      display: grid;
+    }
+
+    /* Main Content Container */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 20px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Tab Section Transition (Cross-fade + 16px upward drift, 250ms) */
+    .tab-section {
+      display: none;
+      animation: sectionDrift 250ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .tab-section.active-section {
+      display: block;
+    }
+    @keyframes sectionDrift {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Staggered Card Fade-In (40ms between cards) */
+    @keyframes cardFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .stagger-card {
+      opacity: 0;
+      animation: cardFadeIn 260ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--stagger-delay, 0ms);
+    }
+
+    /* SECTION HERO STRIP (Giant Outlined Frame Number + Title + Light Meter Ruler) */
+    .section-hero-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 28px 20px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .section-hero-text {
+      flex: 1;
+      min-width: 260px;
+    }
+    .section-hero-text h1 {
+      font-family: var(--font-title);
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .section-hero-text p {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 780px;
+    }
+    .giant-frame-num {
+      font-family: var(--font-mono);
+      font-size: clamp(3.6rem, 6vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--amber);
+      user-select: none;
+      direction: ltr;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+    .golden-rule-banner {
+      margin-top: 16px;
+      background: var(--amber-soft);
+      border: 1px solid var(--border-hover);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+    }
+    /* Light Meter Ruler Tick Line */
+    .light-meter-ruler {
+      margin-top: 22px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      direction: ltr;
+      position: relative;
+    }
+    .light-meter-ticks {
+      flex: 1;
+      height: 8px;
+      margin: 0 12px;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--amber) 0px,
+        var(--amber) 1px,
+        transparent 1px,
+        transparent 12px
+      );
+      opacity: 0.45;
+    }
+
+    /* Sub-section Heading */
+    .subsection-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 40px 0 18px;
+    }
+    .subsection-num {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--amber);
+      direction: ltr;
+      line-height: 1;
+    }
+    .subsection-title {
+      font-family: var(--font-title);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Grids */
+    .contact-sheet-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    @media (min-width: 820px) {
+      .contact-sheet-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .full-span {
+      grid-column: 1 / -1;
+    }
+
+    /* THE PROMPT CARD (Contact Sheet Frame) */
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      position: relative;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+    }
+    /* Pulse highlight when jumped to from search */
+    @keyframes amberRingPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 162, 58, 0); border-color: var(--amber); }
+      25%, 75% { box-shadow: 0 0 0 4px rgba(255, 162, 58, 0.45); border-color: var(--amber); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 162, 58, 0.2); border-color: var(--amber); }
+    }
+    .contact-card.pulse-locate {
+      animation: amberRingPulse 1s ease-in-out 3;
+    }
+
+    /* Top Bar of Contact Card: Top-Right Category Tag, Top-Left Frame Number in Mono */
+    .frame-meta-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .frame-cat-tag {
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--amber);
+      background: var(--amber-soft);
+      border: 1px solid var(--border-hover);
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+    .frame-no-mono {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      direction: ltr;
+      letter-spacing: 0.05em;
+    }
+
+    .frame-title {
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .frame-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Dark Inset Viewfinder Panel */
+    .viewfinder-wrap {
+      position: relative;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 14px 36px;
+      overflow: hidden;
+      transition: background-color 0.12s ease;
+    }
+    .viewfinder-wrap.expanded {
+      padding-bottom: 14px;
+    }
+    .viewfinder-wrap.camera-flash {
+      background-color: #FFFFFF !important;
+    }
+    .viewfinder-wrap.camera-flash .prompt-content {
+      color: #0B0907 !important;
+    }
+    .prompt-content {
+      direction: ltr;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select: all;
+      max-height: calc(1.65em * 4);
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .viewfinder-wrap.expanded .prompt-content {
+      max-height: 2200px;
+    }
+    .viewfinder-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      background: linear-gradient(to bottom, transparent, var(--viewfinder-bg) 85%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 4px 12px;
+      pointer-events: none;
+    }
+    .viewfinder-wrap.expanded .viewfinder-fade {
+      position: static;
+      height: auto;
+      background: transparent;
+      padding: 8px 0 0;
+    }
+    .read-all-btn {
+      pointer-events: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--amber);
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      min-height: 28px;
+    }
+    .read-all-btn:hover {
+      border-color: var(--amber);
+    }
+
+    /* Card Details Drawer (toggled by "تفاصيل") */
+    .frame-details-drawer {
+      display: none;
+      background: var(--viewfinder-bg);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+    .frame-details-drawer.open {
+      display: block;
+    }
+
+    /* Card Action Buttons Row */
+    .frame-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn-copy-amber {
+      flex: 1;
+      min-height: 44px;
+      background: var(--amber);
+      color: #0B0907;
+      border: 1px solid var(--amber);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+    .btn-copy-amber:hover {
+      background: var(--amber-hover);
+    }
+    .btn-copy-amber.copied-teal {
+      background: var(--teal) !important;
+      border-color: var(--teal) !important;
+      color: #0B0907 !important;
+    }
+    .btn-ghost-details {
+      min-height: 44px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-ghost-details:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* Vertical Timeline for Step-by-Step Guides */
+    .vertical-timeline {
+      position: relative;
+      margin: 18px 0 8px;
+      padding-right: 38px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .vertical-timeline::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      right: 13px;
+      width: 1px;
+      background: var(--amber);
+      opacity: 0.55;
+    }
+    .timeline-step {
+      position: relative;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .timeline-circle {
+      position: absolute;
+      right: -38px;
+      top: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--amber);
+      color: var(--amber);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .timeline-step-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    .timeline-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--amber);
+      background: var(--amber-soft);
+      padding: 1px 8px;
+      border-radius: 4px;
+      direction: ltr;
+    }
+    .timeline-example {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--teal);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-top: 6px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 10px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--viewfinder-bg);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--amber);
+      font-family: var(--font-title);
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    td code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--amber);
+      background: var(--surface);
+      padding: 2px 6px;
+      border-radius: 4px;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* Form Controls & Selector Grids (Wizard & Repair) */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-title);
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      min-height: 44px;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      direction: ltr;
+      text-align: left;
+    }
+    .form-input:focus {
+      border-color: var(--amber);
+      outline: none;
+    }
+
+    .tool-selector-grid,
+    .category-pills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .tool-chip,
+    .category-card {
+      min-height: 44px;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+    .tool-chip:hover,
+    .category-card:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+    .tool-chip.selected,
+    .category-card.selected {
+      border-color: var(--amber);
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+    .badge-opt {
+      min-height: 44px;
+      font-size: 0.85rem;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .badge-opt.active {
+      background: var(--amber);
+      color: #0B0907;
+      border-color: var(--amber);
+    }
+
+    /* Interactive Checklist */
+    .check-item {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      width: 100%;
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      color: var(--text);
+      text-align: right;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+    }
+    .check-item:hover {
+      background: var(--amber-soft);
+    }
+    .check-box {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .check-item.done .check-box {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #0B0907;
+      font-weight: 900;
+    }
+    .check-item.done span.text {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    /* Search View Header & Highlights */
+    .search-bar-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .search-counter-pill {
+      font-family: var(--font-title);
+      font-size: 1.05rem;
+      color: var(--amber);
+      font-weight: 700;
+    }
+    .clear-search-chip {
+      min-height: 44px;
+      background: var(--viewfinder-bg);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .clear-search-chip:hover {
+      background: var(--amber);
+      color: #0B0907;
+    }
+    mark.safelight-mark {
+      background: rgba(255, 162, 58, 0.25);
+      color: var(--amber);
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+    .empty-film-state {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Film-Leader Shaped Toast Pill */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: var(--surface-elevated);
+      color: var(--teal);
+      border: 1.5px solid var(--teal);
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 10px 24px;
+      border-radius: 4px 20px 20px 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    #toast::before {
+      content: "FILM 35MM";
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: var(--teal);
+      color: #0B0907;
+      padding: 2px 6px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Responsive Mobile Rules */
+    @media (max-width: 768px) {
+      .header-inner {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+      .logo-title {
+        font-size: 1rem;
+      }
+      .aperture-icon {
+        width: 32px;
+        height: 32px;
+      }
+      #theme-text {
+        display: none;
+      }
+      .exposure-dial {
+        padding: 6px 10px;
+      }
+      .loupe-search-wrapper {
+        display: none;
+      }
+      .mobile-search-btn {
+        display: inline-flex;
+      }
+      .logo-subtitle {
+        display: none;
+      }
+      .film-strip-nav {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-top: 1px solid var(--border);
+        border-bottom: none;
+        z-index: 1100;
+      }
+      .sprocket-track {
+        height: 5px;
+      }
+      .film-strip-scroll {
+        padding: 6px 6px;
+        gap: 4px;
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        overflow: hidden;
+      }
+      .film-frame-btn {
+        min-width: 0;
+        min-height: 46px;
+        padding: 4px 2px;
+        align-items: center;
+        justify-content: center;
+      }
+      .frame-top-meta {
+        display: none;
+      }
+      .frame-label-row {
+        flex-direction: column;
+        gap: 2px;
+        font-size: 0.65rem;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .frame-label-row span {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* Hide frames 6, 7, 8 in the bottom bar; put them in "المزيد" drawer */
+      .film-frame-btn.mobile-overflow-frame {
+        display: none;
+      }
+      .mobile-more-btn {
+        display: flex;
+      }
+      .section-hero-strip {
+        padding: 18px 16px 14px;
+      }
+      .giant-frame-num {
+        font-size: 2.8rem;
+      }
+      .frame-actions {
+        flex-direction: column;
+      }
+      .btn-copy-amber,
+      .btn-ghost-details {
+        width: 100%;
+      }
+      main {
+        padding: 20px 12px 130px;
+      }
+    }
+
+    /* Reduced Motion Compliance */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .stagger-card {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="safelight-glow" aria-hidden="true"></div>
+  <div id="progress-container" aria-hidden="true"><div id="progress-bar"></div></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <!-- Right: Logo & Aperture Icon -->
+      <button type="button" class="logo-area" onclick="switchTab('start')" aria-label="العودة للبداية - استوديو البرومتات بالمصري">
+        <div class="aperture-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="14.31" y1="8" x2="20.05" y2="17.94"/>
+            <line x1="9.69" y1="8" x2="21.17" y2="8"/>
+            <line x1="7.38" y1="12" x2="13.12" y2="2.06"/>
+            <line x1="9.69" y1="16" x2="3.95" y2="6.06"/>
+            <line x1="14.31" y1="16" x2="2.83" y2="16"/>
+            <line x1="16.62" y1="12" x2="10.88" y2="21.94"/>
+          </svg>
+        </div>
+        <div>
+          <span class="logo-title">استوديو البرومتات بالمصري</span>
+          <span class="logo-subtitle">معمل تحميض الصور الواقعية · الإصدار 2.0</span>
+        </div>
+      </button>
+
+      <!-- Center: Loupe Search Field -->
+      <div class="loupe-search-wrapper" role="search">
+        <span class="loupe-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </span>
+        <input
+          type="search"
+          class="search-input"
+          id="search-bar"
+          aria-label="دوّر في كل البرومتات"
+          placeholder="دوّر في كل البرومتات..."
+          oninput="handleSearch(this.value)"
+        >
+        <span class="search-kbd-chip" aria-hidden="true">/</span>
+      </div>
+
+      <!-- Left: Mobile Search Button & Exposure Dial Theme Toggle -->
+      <div class="header-controls">
+        <button type="button" class="mobile-search-btn" onclick="openMobileSearch()" aria-label="فتح البحث">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        <button type="button" class="exposure-dial" id="theme-btn" onclick="toggleTheme()" aria-label="تبديل إضاءة الغرفة المظلمة والنهار">
+          <span class="dial-wheel" id="theme-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </span>
+          <span id="theme-text">ضوء النهار</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Full-Screen Search Modal -->
+  <div class="mobile-search-overlay" id="mobile-search-overlay" role="dialog" aria-label="بحث كامل الشاشة">
+    <div class="mobile-search-top">
+      <input
+        type="search"
+        class="search-input"
+        id="mobile-search-input"
+        placeholder="دوّر في كل البرومتات..."
+        oninput="syncMobileSearch(this.value)"
+      >
+      <button type="button" class="mobile-search-close" onclick="closeMobileSearch()">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- Horizontal Film Strip Navigation -->
+  <nav class="film-strip-nav" aria-label="شريط أقسام المعمل">
+    <div class="sprocket-track" aria-hidden="true"></div>
+    <div class="film-strip-scroll" id="film-strip-scroll">
+      <button type="button" class="film-frame-btn active" id="nav-start" onclick="switchTab('start')">
+        <div class="frame-top-meta"><span>01</span><span>ISO 100</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          <span>ابدأ من هنا</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn" id="nav-wizard" onclick="switchTab('wizard')">
+        <div class="frame-top-meta"><span>02</span><span>RAW</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>اعملّي برومت</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn" id="nav-repair" onclick="switchTab('repair')">
+        <div class="frame-top-meta"><span>03</span><span>FIX</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          <span>صلّحلي صورتي</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn" id="nav-merge" onclick="switchTab('merge')">
+        <div class="frame-top-meta"><span>04</span><span>COMP</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>دمج المنتجات</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn" id="nav-effects" onclick="switchTab('effects')">
+        <div class="frame-top-meta"><span>05</span><span>FX</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          <span>تأثيرات وإعلانات</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn mobile-overflow-frame" id="nav-egypt" onclick="switchTab('egypt')">
+        <div class="frame-top-meta"><span>06</span><span>EGY</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>السياق المصري</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn mobile-overflow-frame" id="nav-dict" onclick="switchTab('dict')">
+        <div class="frame-top-meta"><span>07</span><span>LEX</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>القاموس</span>
+        </div>
+      </button>
+
+      <button type="button" class="film-frame-btn mobile-overflow-frame" id="nav-checklist" onclick="switchTab('checklist')">
+        <div class="frame-top-meta"><span>08</span><span>QC</span></div>
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>قايمة التسليم</span>
+        </div>
+      </button>
+
+      <!-- Mobile "المزيد" Frame -->
+      <button type="button" class="film-frame-btn mobile-more-btn" id="nav-more-btn" onclick="toggleMobileMore()" aria-label="المزيد من الأقسام">
+        <div class="frame-label-row">
+          <svg class="frame-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          <span>المزيد</span>
+        </div>
+      </button>
+    </div>
+    <div class="sprocket-track" aria-hidden="true"></div>
+  </nav>
+
+  <!-- Mobile More Drawer for Frames 06, 07, 08 -->
+  <div class="mobile-more-drawer" id="mobile-more-drawer">
+    <button type="button" class="film-frame-btn" onclick="switchTab('egypt'); closeMobileMore();">
+      <div class="frame-label-row"><span>06 · السياق المصري</span></div>
+    </button>
+    <button type="button" class="film-frame-btn" onclick="switchTab('dict'); closeMobileMore();">
+      <div class="frame-label-row"><span>07 · القاموس</span></div>
+    </button>
+    <button type="button" class="film-frame-btn" onclick="switchTab('checklist'); closeMobileMore();">
+      <div class="frame-label-row"><span>08 · قايمة التسليم</span></div>
+    </button>
+  </div>
+
+  <main>
+
+    <!-- ========================================== -->
+    <!-- SEARCH RESULTS VIEW -->
+    <!-- ========================================== -->
+    <section id="view-search" class="tab-section" aria-live="polite">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>نتايج الفحص على طاولة الضوء</h1>
+            <p>كل الكروت والبرومتات المطابقة لكلمة البحث في شريط النيجاتيف.</p>
+            <div class="search-bar-status">
+              <span class="search-counter-pill" id="search-summary">لقيت 0 نتايج</span>
+              <button type="button" class="clear-search-chip" onclick="clearSearchAndRestore()">✕ امسح البحث</button>
+            </div>
+          </div>
+          <div class="giant-frame-num">SRCH</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>-3 EV</span>
+          <div class="light-meter-ticks"></div>
+          <span>0 EV</span>
+          <div class="light-meter-ticks"></div>
+          <span>+3 EV</span>
+        </div>
+      </div>
+
+      <div id="search-results" class="contact-sheet-grid"></div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 01. ابدأ من هنا -->
+    <!-- ========================================== -->
+    <section id="view-start" class="tab-section active-section" data-section-name="ابدأ من هنا">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>ليه صور الذكاء الاصطناعي بتفضح نفسها؟</h1>
+            <p>
+              الـ AI مشكلته إنه <strong>مثالي زيادة عن اللزوم!</strong> بشرة ناعمة زي البلاستيك من غير مسام، إضاءة مسطحة منورة في كل حتة بدون مصدر منطقي، وألوان فاقعة كأنها كارتون ثري دي. السر إننا نوصف الكاميرا الخام ونطلب عيوب طبيعية متعمدة (حبيبات فيلم، غبار، وعدم تماثل خفيف).
+            </p>
+            <div class="golden-rule-banner">
+              ★ القاعدة الذهبية من الدليل: الموضوع أولاً، ثم البلوك دائماً بنفس الترتيب.
+            </div>
+          </div>
+          <div class="giant-frame-num">01</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>f/1.4</span>
+          <div class="light-meter-ticks"></div>
+          <span>f/5.6</span>
+          <div class="light-meter-ticks"></div>
+          <span>f/16</span>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">01.1</span>
+        <h2 class="subsection-title">المعادلة الأساسية للواقعية (الـ 10 أجزاء)</h2>
+      </div>
+
+      <!-- Full-width Timeline Card for the 10-part formula -->
+      <div class="contact-sheet-grid">
+        <article class="contact-card full-span stagger-card" id="card-formula-10" data-category="أساسيات الواقعية" data-frame="No. 01">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">أساسيات الواقعية</span>
+              <span class="frame-no-mono">No. 01</span>
+            </div>
+            <h3 class="frame-title">معادلة الـ 10 أجزاء لبناء أي برومت واقعي</h3>
+            <p class="frame-desc">ركب برومتك دايماً على المعادلة دي زي طبخة الكشري المتستفة:</p>
+          </div>
+
+          <div class="viewfinder-wrap expanded" id="vf-formula-bar">
+            <div class="prompt-content" id="p-formula-line">Type + Subject + Materials + Light + Camera/Lens + Composition + Background + Color Grading + Imperfections + Exclusions</div>
+          </div>
+
+          <div class="vertical-timeline">
+            <div class="timeline-step">
+              <div class="timeline-circle">01</div>
+              <div class="timeline-step-head"><strong>1. نوع التصوير (Type)</strong><span class="timeline-tag">Type</span></div>
+              <div class="frame-desc">التشبيه: بتحدد نازل تصور إعلان منتج في استوديو ولا صورة شوارع؟</div>
+              <div class="timeline-example">Professional commercial product photography / Candid editorial portrait</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">02</div>
+              <div class="timeline-step-head"><strong>2. الموضوع والبطل (Subject)</strong><span class="timeline-tag">Subject</span></div>
+              <div class="frame-desc">التشبيه: بطل القصة، كوباية قهوة مكسورة الحافة نصها مليان، مش بس "coffee cup"!</div>
+              <div class="timeline-example">A luxury perfume bottle with frosted glass body and brushed gold cap</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">03</div>
+              <div class="timeline-step-head"><strong>3. الخامات والملمس (Materials)</strong><span class="timeline-tag">Materials</span></div>
+              <div class="frame-desc">التشبيه: قماشة كتان، خشب بلوط معرج، إزاز مصنفر (Frosted glass).</div>
+              <div class="timeline-example">Brushed metal, dark natural marble with veining, linen weave</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">04</div>
+              <div class="timeline-step-head"><strong>4. مصدر الإضاءة (Light)</strong><span class="timeline-tag">Light</span></div>
+              <div class="frame-desc">التشبيه: النور جاي من شباك شمال ولا سوفت بوكس استوديو؟ بلاش نور من كل حتة.</div>
+              <div class="timeline-example">Soft natural window light from the left with realistic light falloff</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">05</div>
+              <div class="timeline-step-head"><strong>5. الكاميرا والعدسة (Camera/Lens)</strong><span class="timeline-tag">Camera/Lens</span></div>
+              <div class="frame-desc">التشبيه: عدسة ماكرو 100mm للمنتجات، أو 85mm بفتحة واسعة f/1.8 للبورتيريه والعزل.</div>
+              <div class="timeline-example">Shot on Canon EOS R5 with a 100mm macro lens, f/8, ISO 100</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">06</div>
+              <div class="timeline-step-head"><strong>6. زاوية الكادر (Composition)</strong><span class="timeline-tag">Composition</span></div>
+              <div class="frame-desc">التشبيه: المنتج في النص بالظبط، ولا في التلت الشمال وسايب فراغ إعلاني يمين للنصوص؟</div>
+              <div class="timeline-example">Centered with slight low angle, generous negative space on the right for text</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">07</div>
+              <div class="timeline-step-head"><strong>7. الخلفية (Background)</strong><span class="timeline-tag">Background</span></div>
+              <div class="frame-desc">التشبيه: الحيطة اللي ورا المنتج تكون مموهة بهدوء مش مبهرجة ومشتتة.</div>
+              <div class="timeline-example">Out-of-focus neutral warm grey studio backdrop with smooth gradient</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">08</div>
+              <div class="timeline-step-head"><strong>8. ألوان الفيلم (Color Grading)</strong><span class="timeline-tag">Color Grading</span></div>
+              <div class="frame-desc">التشبيه: ألوان هادية حقيقية وملمس فيلم Kodak Portra 400 بدل ألوان البلاستيك الفاقعة.</div>
+              <div class="timeline-example">True-to-life slightly muted colors, Kodak Portra 400 film look</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">09</div>
+              <div class="timeline-step-head"><strong>9. العيوب الطبيعية (Imperfections)</strong><span class="timeline-tag">Imperfections</span></div>
+              <div class="frame-desc">التشبيه: سر الصنعة! مسام الجلد، ذرات تراب بتعكس النور، لحسة بصمة صباع على الإزاز.</div>
+              <div class="timeline-example">Subtle film grain, fine dust particles, natural skin pores, unretouched RAW photo</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-circle">10</div>
+              <div class="timeline-step-head"><strong>10. الاستبعاد (Exclusions)</strong><span class="timeline-tag">Exclusions</span></div>
+              <div class="frame-desc">التشبيه: الممنوعات من العرض.. لا كارتون ولا ثري دي ولا لمعة بلاستيك.</div>
+              <div class="timeline-example">Avoid and exclude: cartoon, illustration, 3D render, CGI, plastic skin, airbrushed</div>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-formula-10">
+            رتب العناصر دي ورا بعض في أي أداة توليد صور عشان تضمن إن الموديل يفهم المشهد الفيزيائي قبل التفاصيل التجميلية.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-formula-line', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-formula-10')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Card 2: 8K Crime -->
+        <article class="contact-card stagger-card" id="card-8k-warning" data-category="تحذير هام" data-frame="No. 02">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تحذير هام</span>
+              <span class="frame-no-mono">No. 02</span>
+            </div>
+            <h3 class="frame-title">جريمة الـ 8K وكلمات "الروشنة"</h3>
+            <p class="frame-desc">
+              ⚠️ <strong>امسح دول فوراً:</strong> كلمات المبالغة بتخلي المحرك يفتكرك عايز شغل كمبيوتر وثري دي بيلمع (CGI) من موقع ArtStation، مش لقطة كاميرا حقيقية!
+            </p>
+          </div>
+
+          <div class="viewfinder-wrap expanded" id="vf-8k">
+            <div class="prompt-content" id="p-8k-banned">8K, masterpiece, ultra-detailed, photorealistic, glowing, stunning</div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-8k">
+            استبدل الكلمات دي دايماً بوصف الكاميرا الحقيقية مثل: Shot on Canon EOS R5, ISO 100, unretouched RAW photograph.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-8k-banned', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-8k')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Card 3: Universal Realism Block (;real) -->
+        <article class="contact-card stagger-card" id="card-real-block" data-category="البلوك الشامل" data-frame="No. 03">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">البلوك الشامل (;real)</span>
+              <span class="frame-no-mono">No. 03</span>
+            </div>
+            <h3 class="frame-title">Universal Realism Block (لكل المحركات)</h3>
+            <p class="frame-desc">البلوك المعتمد الجاهز للدمج بعد وصف موضوعك مباشرة للحصول على واقعية تصوير خام.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-real">
+            <div class="prompt-content" id="p-real">Photorealistic RAW photograph, shot on Canon EOS R5 with an 85mm f/2.8 lens, ISO 100, natural soft diffused lighting with realistic light falloff and soft natural shadows, true-to-life colors, natural color grading, slightly muted tones, tack-sharp focus on the subject with natural shallow depth of field and creamy bokeh, fine realistic material textures and micro-details, natural skin texture with visible pores and flyaway hairs (when people are present), subtle film grain, slight lens vignetting, minor natural imperfections, not overly polished, unretouched, authentic professional photography. It must look like a real photograph taken with a real camera. Avoid and exclude: cartoon, illustration, 3D render, CGI, digital art, painting, plastic skin, airbrushed, overly smooth, oversaturated, HDR look, glowing edges, perfect symmetry, artificial lighting, harsh flash, watermark, text, logo, distorted hands, extra fingers, deformed, blurry, low resolution.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-real', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-real">
+            اكتب جملة الموضوع الأول بالانجليزي، وبعدين الصق البلوك ده وراه في أي محرك (Midjourney, Flux, Gemini, ChatGPT).
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-real', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-real')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 02. اعملّي برومت (المعالج الذكي) -->
+    <!-- ========================================== -->
+    <section id="view-wizard" class="tab-section" data-section-name="اعملّي برومت">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>معالج توليد البرومتات الذكي</h1>
+            <p>اختار تصنيفك، واكتب موضوعك، والمعالج هيصيغلك البرومت النهائي ويطبق قواعد أداتك تلقائياً.</p>
+          </div>
+          <div class="giant-frame-num">02</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>ISO 100</span>
+          <div class="light-meter-ticks"></div>
+          <span>85mm</span>
+          <div class="light-meter-ticks"></div>
+          <span>RAW</span>
+        </div>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <div class="contact-card full-span">
+          <div class="frame-meta-bar">
+            <span class="frame-cat-tag">إعدادات الكاميرا والمحرك</span>
+            <span class="frame-no-mono">No. 04</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">1. بتستخدم أداة إيه؟</label>
+            <div class="tool-selector-grid" role="group" aria-label="اختيار أداة الذكاء الاصطناعي">
+              <button type="button" class="tool-chip selected" onclick="selectTool('midjourney', this)">Midjourney</button>
+              <button type="button" class="tool-chip" onclick="selectTool('flux', this)">Flux</button>
+              <button type="button" class="tool-chip" onclick="selectTool('stablediffusion', this)">Stable Diffusion</button>
+              <button type="button" class="tool-chip" onclick="selectTool('chatgpt', this)">ChatGPT / DALL-E</button>
+              <button type="button" class="tool-chip" onclick="selectTool('gemini', this)">Gemini</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">2. مقاس الكادر (Aspect Ratio):</label>
+            <div class="badge-bar" role="group" aria-label="مقاس الكادر">
+              <button type="button" class="badge-opt active" onclick="selectRatio('4:5', this)">4:5 (إنستجرام إعلاني)</button>
+              <button type="button" class="badge-opt" onclick="selectRatio('1:1', this)">1:1 (مربع)</button>
+              <button type="button" class="badge-opt" onclick="selectRatio('9:16', this)">9:16 (ستوري وريلز)</button>
+              <button type="button" class="badge-opt" onclick="selectRatio('16:9', this)">16:9 (بانر عريض)</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">3. اختار تصنيف الصورة من قوالب الدليل الـ 14:</label>
+            <div class="category-pills-grid" role="group" aria-label="تصنيف الصورة">
+              <button type="button" class="category-card selected" onclick="selectCategory('prod', this)">🧴 منتجات تجاري (;prod)</button>
+              <button type="button" class="category-card" onclick="selectCategory('ppl', this)">👤 بورتيريه وأشخاص (;ppl)</button>
+              <button type="button" class="category-card" onclick="selectCategory('food', this)">🍔 أكل ومشروبات (;food)</button>
+              <button type="button" class="category-card" onclick="selectCategory('int', this)">🛋️ عقارات وديكور (;int)</button>
+              <button type="button" class="category-card" onclick="selectCategory('white', this)">📦 كتالوج أمازون أبيض (;white)</button>
+              <button type="button" class="category-card" onclick="selectCategory('jewel', this)">💍 ساعات ومجوهرات (;jewel)</button>
+              <button type="button" class="category-card" onclick="selectCategory('beauty', this)">✨ عناية وتجميل (;beauty)</button>
+              <button type="button" class="category-card" onclick="selectCategory('drink', this)">🥤 مشروبات مثلجة (;drink)</button>
+              <button type="button" class="category-card" onclick="selectCategory('fashion', this)">👗 أزياء وموديل (;fashion)</button>
+              <button type="button" class="category-card" onclick="selectCategory('car', this)">🚗 سيارات إعلانية (;car)</button>
+              <button type="button" class="category-card" onclick="selectCategory('land', this)">🏞️ طبيعة وسياحة (;land)</button>
+              <button type="button" class="category-card" onclick="selectCategory('street', this)">📸 شارع وتوثيق (;street)</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" for="wiz-subject">4. اكتب وصف موضوعك (Subject):</label>
+            <input type="text" class="form-input" id="wiz-subject" value="A frosted amber glass dropper bottle on a light oak wooden table" oninput="compileWizard()">
+          </div>
+        </div>
+
+        <!-- Compiled Output Contact Card -->
+        <article class="contact-card full-span" id="card-wiz-result" data-category="المعالج الذكي" data-frame="No. 05">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">المعالج الذكي</span>
+              <span class="frame-no-mono">No. 05</span>
+            </div>
+            <h3 class="frame-title">البرومت المتولد والجاهز لأداتك</h3>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-wiz-out">
+            <div class="prompt-content" id="wiz-output">...</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-wiz-out', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-wiz-out">
+            تم دمج موضوعك مع إعدادات العدسة والإضاءة والعيوب الطبيعية الخاصة بالتصنيف المختار.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('wiz-output', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-wiz-out')">تفاصيل</button>
+          </div>
+
+          <!-- Stable Diffusion Negative Box -->
+          <div id="sd-neg-box" style="display:none; margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px;">
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag" style="color:var(--danger); border-color:var(--danger);">خانة السلبي المنفصلة (Stable Diffusion Negative)</span>
+              <span class="frame-no-mono">NEG</span>
+            </div>
+            <div class="viewfinder-wrap expanded" style="margin-top:8px;">
+              <div class="prompt-content" id="wiz-sd-neg">cartoon, illustration, 3D render, CGI, digital art, painting, plastic skin, airbrushed, overly smooth, oversaturated, HDR look, glowing edges, perfect symmetry, artificial lighting, harsh flash, watermark, text, logo, distorted hands, extra fingers, deformed, blurry, low resolution</div>
+            </div>
+            <div class="frame-actions" style="margin-top:10px;">
+              <button type="button" class="btn-copy-amber" onclick="copyPrompt('wiz-sd-neg', this)">انسخ البرومت</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 03. صلّحلي صورتي (أوامر الـ FIX الـ 12) -->
+    <!-- ========================================== -->
+    <section id="view-repair" class="tab-section" data-section-name="صلّحلي صورتي">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>مركز إصلاح الصور وأوامر الـ FIX الـ 12</h1>
+            <p>بدل ما تعيد توليد الصورة من الصفر وتضيع وقت وفلوس.. حدد العيب بالظبط وانسخ أمر الإصلاح المخصص من القسم 03 و 07!</p>
+          </div>
+          <div class="giant-frame-num">03</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>INPAINT</span>
+          <div class="light-meter-ticks"></div>
+          <span>RELIGHT</span>
+          <div class="light-meter-ticks"></div>
+          <span>4K</span>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">03.1</span>
+        <h2 class="subsection-title">جدول تقييم المشكلة (تصلح موضعي ولا تعيد توليد؟)</h2>
+      </div>
+
+      <div class="contact-card full-span" style="margin-bottom:28px;" data-category="إصلاح الصور" data-frame="No. 06">
+        <div class="frame-meta-bar">
+          <span class="frame-cat-tag">تشخيص العيوب</span>
+          <span class="frame-no-mono">No. 06</span>
+        </div>
+        <h3 class="frame-title">مصفوفة القرار السريع قبل التعديل</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr><th>حجم المشكلة</th><th>تأثيرها على الصورة</th><th>القرار الصح من الدليل</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>عيب صغير (&lt; 5%):</strong> حرف مشوه، صباع زايد، حافة مش مظبوطة</td><td>مبيأثرش على باقي العناصر</td><td><strong>تعديل موضعي:</strong> (Inpainting أو أمر FIX بقناع).</td></tr>
+              <tr><td><strong>منطقة متوسطة (5–25%):</strong> انعكاس غلط، ظل مش راكب، سطح خشب باهت</td><td>محتاجة تتناغم مع الجوار</td><td><strong>إعادة توليد منطقة محددة:</strong> (Mask + وصف المنطقة بالكامل).</td></tr>
+              <tr><td><strong>عنصر كامل مشوه:</strong> عبوة ملوية، وش غريب</td><td>بقية الصورة سليمة تماماً</td><td><strong>إعادة توليد العنصر:</strong> (صورة مرجعية للعنصر + قفل باقي المشهد).</td></tr>
+              <tr><td><strong>المنظور أو الإضاءة العامة غلط</strong></td><td>بيأثر على كل تفصيلة في الصورة</td><td><strong>إعادة إنشاء من الصفر:</strong> استخدم النتيجة كمرجع تكوين فقط.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">03.2</span>
+        <h2 class="subsection-title">مصلح الأوامر التفاعلي (املا المتغيرات وانسخ)</h2>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <article class="contact-card full-span" id="card-fix-interactive" data-category="إصلاح الصور" data-frame="No. 07">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">إصلاح الصور</span>
+              <span class="frame-no-mono">No. 07</span>
+            </div>
+            <label class="form-label">اختار الأمر اللي محتاجه:</label>
+            <div class="tool-selector-grid" id="fix-commands-list" role="group" aria-label="أوامر الإصلاح الـ 12">
+              <button type="button" class="tool-chip selected" onclick="loadFixCommand('fix_prod', this)">FIX منتج</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('fix_ppl', this)">FIX شخص وأطراف</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('fix_bg', this)">FIX خلفية مشوهة</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('blend', this)">BLEND دمج عنصر</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('relight', this)">RELIGHT ضبط إضاءة</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('recolor', this)">RECOLOR تغيير لون</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('replace', this)">REPLACE استبدال</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('remove', this)">REMOVE حذف وتكملة</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('expand', this)">EXPAND توسيع الكادر</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('upscale', this)">UPSCALE تفاصيل دقيقة</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('match', this)">MATCH مطابقة إضاءة</button>
+              <button type="button" class="tool-chip" onclick="loadFixCommand('clean', this)">CLEAN تنظيف شوائب</button>
+            </div>
+          </div>
+
+          <div id="cmd-meta-desc"></div>
+          <div id="cmd-inputs-container"></div>
+
+          <div class="viewfinder-wrap" id="vf-cmd-out">
+            <div class="prompt-content" id="cmd-output-text">...</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-cmd-out', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-cmd-out">
+            ارفع صورتك في أداة التعديل (مثل Flux Kontext أو ChatGPT أو Gemini) وانسخ الأمر بعد تعديل الحقول.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('cmd-output-text', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-cmd-out')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Ultra Quality Enhance Card -->
+        <article class="contact-card full-span" id="card-enhance-ultra" data-category="إصلاح الصور" data-frame="No. 08">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">إصلاح الصور</span>
+              <span class="frame-no-mono">No. 08</span>
+            </div>
+            <h3 class="frame-title">Ultra Quality Enhance – نفس الصورة بالظبط بتفاصيل أوضح</h3>
+            <p class="frame-desc">تحسين الصورة لجودة فائقة بدون أي تغيير في التكوين أو الملامح أو الألوان.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-enhance-ultra">
+            <div class="prompt-content" id="p-enhance-ultra">Enhance this image to ultra high quality while keeping it exactly the same. Preserve the original composition, framing, subject, pose, facial features, expression, colors, lighting, and aspect ratio with no changes at all. Do not add, remove, or move any object. Restore and add fine realistic detail: sharp natural textures, crisp edges, clear skin pores and hair strands, fabric weave, material surface detail, and fine small elements. Remove blur, noise, compression artifacts, and pixelation. Keep it photorealistic and natural, with balanced contrast and a subtle natural grain. Output at the same dimensions as the input, 4K quality, highly detailed, sharp focus.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-enhance-ultra', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-enhance-ultra">
+            مثالي للصور القديمة أو المضغوطة أو اللي طالعة من موديل بدقة منخفضة وعايز ترفع جودتها لـ 4K بدون تغيير الملامح.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-enhance-ultra', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-enhance-ultra')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 04. دمج المنتجات (الأقسام 05 و 06) -->
+    <!-- ========================================== -->
+    <section id="view-merge" class="tab-section" data-section-name="دمج المنتجات">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>تعديل ودمج المنتجات داخل المشاهد (Compositing)</h1>
+            <p>إزاي تحط منتجك الحقيقي في مشهد إعلاني من غير ما اللوجو يتحرف ولا الإزازة تطير في الهوا.</p>
+          </div>
+          <div class="giant-frame-num">04</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>STRICT</span>
+          <div class="light-meter-ticks"></div>
+          <span>CONTROLLED</span>
+          <div class="light-meter-ticks"></div>
+          <span>CREATIVE</span>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">04.1</span>
+        <h2 class="subsection-title">أوضاع التحكم الثلاثة في نطاق التعديل (Section 5.1)</h2>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <!-- STRICT MODE -->
+        <article class="contact-card" id="card-mode-strict" data-category="دمج المنتجات" data-frame="No. 09">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">دمج المنتجات</span>
+              <span class="frame-no-mono">No. 09</span>
+            </div>
+            <h3 class="frame-title">STRICT MODE (الوضع الصارم)</h3>
+            <p class="frame-desc"><strong>تشبيه:</strong> "ممنوع اللمس إلا بإذن نيابة!" للحاجات اللي فيها لوجو وعبوات مطبوعة؛ بيمنع الموديل يغير بكسل واحدة برة الهدف.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-mode-strict">
+            <div class="prompt-content" id="p-mode-strict">STRICT MODE: Change only [TARGET] and nothing else. Every element outside the target must stay identical in shape, position, size, color, texture and detail. Do not improve or restyle anything outside the target.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-mode-strict', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-mode-strict">
+            استخدمه في أول البرومت لما تعدل خلفية حول منتج حقيقي عليه كتابة أو علامة تجارية مسجلة.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-mode-strict', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-mode-strict')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- CONTROLLED MODE -->
+        <article class="contact-card" id="card-mode-controlled" data-category="دمج المنتجات" data-frame="No. 10">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">دمج المنتجات</span>
+              <span class="frame-no-mono">No. 10</span>
+            </div>
+            <h3 class="frame-title">CONTROLLED MODE (الوضع المتوازن)</h3>
+            <p class="frame-desc"><strong>تشبيه:</strong> "سماح في حدود الجيرة".. مسموح يظبط ظل خفيف أو انعكاس محلي على السطح عشان المنتج يندمج طبيعي.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-mode-controlled">
+            <div class="prompt-content" id="p-mode-controlled">CONTROLLED MODE: Complete the task on [TARGET]. You may adjust only what is necessary for a natural result: nearby shadows, reflections, edge blending and local color bounce. Keep overall design unchanged.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-mode-controlled', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-mode-controlled">
+            الوضع الأنسب لدمج العبوات على أسطح رخام أو خشب بحيث ياخد انعكاس طبيعي من غير ما يغير شكل العبوة.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-mode-controlled', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-mode-controlled')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- CREATIVE MODE -->
+        <article class="contact-card" id="card-mode-creative" data-category="دمج المنتجات" data-frame="No. 11">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">دمج المنتجات</span>
+              <span class="frame-no-mono">No. 11</span>
+            </div>
+            <h3 class="frame-title">CREATIVE MODE (الوضع الإبداعي)</h3>
+            <p class="frame-desc"><strong>تشبيه:</strong> "إطلاق العنان مع المحافظة على البطل".. يغير الديكور والجو بس شكل المنتج وألوانه الأساسية خط أحمر.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-mode-creative">
+            <div class="prompt-content" id="p-mode-creative">CREATIVE MODE: Reinterpret [TARGET] with artistic freedom in [ALLOWED ASPECTS]. Hard limits that must not change: [HARD LIMITS, e.g. product shape, label, logo, text, brand colors].</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-mode-creative', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-mode-creative">
+            ممتاز لما تحب تجرب سيتينج إعلاني جديد بالكامل مع الحفاظ على خطوط حمراء واضحة لهوية البراند.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-mode-creative', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-mode-creative')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Product Integration 6.1 -->
+        <article class="contact-card" id="card-merge-main" data-category="دمج المنتجات" data-frame="No. 12">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">دمج المنتجات</span>
+              <span class="frame-no-mono">No. 12</span>
+            </div>
+            <h3 class="frame-title">دمج منتج حقيقي في مشهد جديد (Product Integration 6.1)</h3>
+            <p class="frame-desc">ينقل منتجك بصورته الحقيقية داخل بيئة تصوير تجارية مع مطابقة المنظور والظلال.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-merge-main">
+            <div class="prompt-content" id="p-merge-main">Use the attached product photo as the exact reference. Keep the [PRODUCT] identical: shape, proportions, colors, finish, label, logo and all printed text; no redesign, no invented details. Place it in this scene: [SCENE], standing on [SURFACE], at about [PRODUCT SIZE] of the frame height. Light the product to match the scene: main light from [LIGHT DIRECTION], soft shadow falloff, a natural contact shadow under the base and realistic reflections of nearby surroundings. Match the scene perspective and camera height. Shot on Canon EOS R5, 85mm f/5.6, ISO 100, subtle film grain. It must look like the real product was photographed in this place.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-merge-main', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-merge-main">
+            بدل الكلمات بين الأقواس [PRODUCT] و [SCENE] و [SURFACE] بوصف منتجك والمكان اللي عايز تحطه فيه.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-merge-main', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-merge-main')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Grounding & Contact Shadows 6.3 / 6.8 -->
+        <article class="contact-card full-span" id="card-merge-shadow" data-category="دمج المنتجات" data-frame="No. 13">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">دمج المنتجات</span>
+              <span class="frame-no-mono">No. 13</span>
+            </div>
+            <h3 class="frame-title">ظلال التلامس وتثبيت المنتج الطاير (Grounding & Contact Shadows 6.3 / 6.8)</h3>
+            <p class="frame-desc">يعالج مشكلة المنتج اللي باين كأنه مقصوص وملزوق أو طاير فوق الترابيزة.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-merge-shadow">
+            <div class="prompt-content" id="p-merge-shadow">Edit the attached image. Ground the floating [PRODUCT] on [SURFACE]: make the base flat against the surface, add a tight dark contact shadow exactly where the base touches the surface, a softer cast shadow toward [SHADOW DIRECTION], and a subtle reflection or ambient occlusion where the base meets the surface. Correct the base perspective to the surface plane. Keep product shape, label, logo, text and colors unchanged.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-merge-shadow', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-merge-shadow">
+            بيضيف ظل تلامس ضيق وغامق تحت القاعدة مباشرة (Contact Shadow) مع ظل ممدود ناعم في اتجاه الإضاءة.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-merge-shadow', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-merge-shadow')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">04.2</span>
+        <h2 class="subsection-title">تبديل الشخصية والورقة المرجعية (Character Tools)</h2>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <!-- Character Swap Full-Width Timeline Card -->
+        <article class="contact-card full-span" id="card-char-swap" data-category="تبديل الشخصية" data-frame="No. 14">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تبديل الشخصية</span>
+              <span class="frame-no-mono">No. 14</span>
+            </div>
+            <h3 class="frame-title">مولّد برومت تبديل الشخصية مع الحفاظ على المشهد (Character Swap)</h3>
+            <p class="frame-desc">أداة لتبديل الشخصية بالكامل (الوش واللبس والبنية الجسمانية) مع الحفاظ على المشهد والوضعية والخلفية والإضاءة، من غير ما تضطر تكتب وصف الصورة بإيدك.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-char-swap">
+            <div class="prompt-content" id="p-char-swap">You are an expert prompt engineer for AI image generation.
+
+I will upload a reference image. Your job is to write ONE detailed image-generation prompt that recreates the exact same scene, but with the main character fully replaced (face, outfit, and body build) by a different person/character that I will supply separately as a character reference image.
+
+Follow these rules strictly:
+
+1. KEEP everything about the scene identical:
+   - Composition and framing (shot type, camera angle, distance, lens feel)
+   - Pose, body language, gesture, and facial expression
+   - Background, environment, props, and spatial layout
+   - Lighting (direction, softness, color temperature, shadows)
+   - Color palette, mood, atmosphere, and overall art style (photo, cinematic, illustration, etc.)
+
+2. REPLACE the character completely (identity, outfit, and body build):
+   - Do NOT describe the original person's face, facial features, ethnicity, age, hair, body shape, body proportions, height, build, or clothing and accessories.
+   - Refer to the subject only as "the character from the character reference image".
+   - Face and identity: use the face, hair, skin tone, and age from the character reference image.
+   - Outfit: dress the character in the exact outfit and accessories shown in the character reference image (same items, colors, fabrics, fit, logos, and prints). Do not keep any clothing from the original scene.
+   - Body build: use the body type, proportions, height, and physique of the character from the character reference image, not the original person's.
+   - Adapt the new body and outfit naturally to the original pose, with realistic fabric folds, correct fit, and proper interaction with props and surfaces in the scene. If part of the outfit is not visible in the character reference image, extend it logically in the same style and colors.
+   - Light the new character and outfit to match the scene's lighting, shadows, and color temperature so they look naturally part of the scene.
+   - Add an instruction such as: "Use the face, outfit, and body build from the character reference image, keep the original scene, pose, and expression unchanged."
+
+3. Write the prompt in clear, natural English, in one flowing paragraph (or short structured sections if the scene is complex), using precise visual language.
+
+4. End the prompt with a short line of quality keywords (e.g., "highly detailed, sharp focus, realistic skin texture, 8k") that match the image's style.
+
+5. Output format:
+   - First: the final prompt inside a code block, ready to copy.
+   - Then: a "Negative prompt" line (e.g., "distorted face, extra fingers, blurry, low quality, watermark, mismatched lighting, original clothing, wrong body proportions").
+   - Do not add explanations unless I ask.
+
+Now analyze the uploaded image and give me the prompt.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-char-swap', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <!-- Vertical Timeline for the 10 steps -->
+          <h4 style="font-family:var(--font-title); color:var(--amber); margin-top:8px;">خطوات الاستخدام بالتفصيل:</h4>
+          <div class="vertical-timeline">
+            <div class="timeline-step"><div class="timeline-circle">01</div><strong>جهّز الصورتين:</strong> <strong>صورة المشهد (الريفرنس):</strong> الصورة اللي عاجبك مشهدها وعاوز تعيده. <strong>صورة الشخصية الجديدة:</strong> صورة واضحة للشخصية اللي عاوز تحطها مكان الأصلية، يفضل جسمها كله ظاهر واللبس واضح والوش ظاهر من قدام (إضاءة كويسة). اللبس والبنية الجسمانية بيتاخدوا منها.</div>
+            <div class="timeline-step"><div class="timeline-circle">02</div><strong>افتح أداة AI بتقبل صور:</strong> زي Claude أو ChatGPT أو Gemini.</div>
+            <div class="timeline-step"><div class="timeline-circle">03</div><strong>ارفع صورة المشهد:</strong> ارفع صورة الريفرنس في الشات.</div>
+            <div class="timeline-step"><div class="timeline-circle">04</div><strong>الصق البرومت:</strong> انسخ البرومت اللي فوق والصقه مع الصورة، وابعت.</div>
+            <div class="timeline-step"><div class="timeline-circle">05</div><strong>استنى النتيجة:</strong> الـ AI هيرجعلك البرومت النهائي جوه code block، والـ Negative prompt تحته.</div>
+            <div class="timeline-step"><div class="timeline-circle">06</div><strong>انسخ البرومت:</strong> انسخ البرومت والـ Negative prompt.</div>
+            <div class="timeline-step"><div class="timeline-circle">07</div><strong>روح لأداة توليد الصور:</strong> افتح الأداة اللي هتولد بيها (Nano Banana، Midjourney، Flux Kontext، أو غيرها).</div>
+            <div class="timeline-step"><div class="timeline-circle">08</div><strong>ارفع صورة الشخصية الجديدة:</strong> ارفعها كريفرنس للشخصية (وش ولبس وجسم). في Midjourney استخدم <code>--cref رابط_الصورة</code>. في Nano Banana / Flux Kontext ارفعها كصورة تانية مع البرومت.</div>
+            <div class="timeline-step"><div class="timeline-circle">09</div><strong>الصق البرومت وولّد:</strong> حط البرومت (والنيجاتيف لو الأداة بتدعمه) واضغط توليد.</div>
+            <div class="timeline-step"><div class="timeline-circle">10</div><strong>عدّل لو محتاج:</strong> لو الوش أو اللبس أو الجسم مش شبه المطلوب أو في تفصيلة غلط، ارجع للـ AI الأول واطلب منه: "Adjust the prompt to keep the face, outfit, and body closer to the reference" وجرب 3 لـ 4 مرات.</div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-char-swap">
+            نصيحة: جرب أكتر من توليد (3 لـ 4 مرات) واختار أحسن نتيجة، لأن الأدوات دي بتدي نتايج مختلفة كل مرة.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-char-swap', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-char-swap')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Character Turnaround Sheet Full-Width Card -->
+        <article class="contact-card full-span" id="card-char-sheet" data-category="ورقة مرجعية للشخصية" data-frame="No. 15">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">ورقة مرجعية للشخصية</span>
+              <span class="frame-no-mono">No. 15</span>
+            </div>
+            <h3 class="frame-title">Character Turnaround Sheet – 8 زوايا لنفس الشخصية</h3>
+            <p class="frame-desc">بتحول صورة واحدة للشخصية لورقة مرجعية كاملة على خلفية بيضا: 3 لقطات للراس (أمام، جنب، ورا) و5 لقطات للجسم كله من زوايا مختلفة.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-char-sheet">
+            <div class="prompt-content" id="p-char-sheet">Use the uploaded image as the single character reference. Create ONE professional character reference sheet (character turnaround sheet) of the exact same person shown in the uploaded image, on a clean pure white background, with soft even studio lighting and no shadows on the background.
+
+IDENTITY (most important):
+Preserve the person's exact face, facial features, skin tone, hair style and texture, facial hair, age, and body proportions from the uploaded image. The person must be instantly recognizable in every single view. Do not beautify, change, or stylize the face.
+
+OUTFIT:
+Dress the person in the exact same outfit shown in the uploaded image (same clothing items, colors, fabrics, fit, logos, prints, and accessories). If some parts of the outfit are not visible in the uploaded image (for example the back or the sides), logically extend the design in a consistent way that matches the style, colors, and details of the visible parts. Keep every outfit detail identical across all views.
+
+LAYOUT (strict, two rows, evenly spaced, all on one single white canvas, no borders, no text, no labels, no captions):
+
+TOP ROW - 3 head and neck views, cropped at the neckline/collar:
+1. Front view of the head, looking straight at the camera, neutral relaxed expression
+2. Right side profile view of the head (90 degrees)
+3. Back view of the head, showing the hair from behind
+
+BOTTOM ROW - 5 full-body views, standing in a relaxed neutral A-pose with arms slightly away from the body, shown from the neck down (the head is omitted in these full-body views because it is already shown in the top row), including shoes:
+1. Front view
+2. Front three-quarter view (turned about 45 degrees)
+3. Side view (90 degrees)
+4. Back three-quarter view (turned about 45 degrees)
+5. Back view
+
+CONSISTENCY RULES:
+- Same person, same outfit, same proportions, same lighting, and same scale in all 8 views
+- Heads in the top row and bodies in the bottom row must match in skin tone and proportions
+- Realistic photographic quality, sharp focus, natural skin texture, accurate fabric details and folds
+- Clean cutout look with a pure white background, no props, no extra people, no watermark, no text
+
+Output: a single high-resolution image, wide landscape format (3:2).</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-char-sheet', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="vertical-timeline">
+            <div class="timeline-step"><div class="timeline-circle">01</div>ارفع صورة واضحة للشخصية (يفضل الوش ظاهر والهدوم ظاهرة بالكامل) وابعت البرومت زي ما هو.</div>
+            <div class="timeline-step"><div class="timeline-circle">02</div>الأدوات اللي بتدي أحسن نتيجة للنوع ده: <strong>Nano Banana (Gemini)</strong> أو <strong>ChatGPT Image</strong> أو <strong>Flux Kontext</strong>.</div>
+            <div class="timeline-step"><div class="timeline-circle">03</div>البرومت مخلي الجسم من الرقبة لتحت في الصف التحتاني. لو عاوز الجسم بالراس كاملة، امسح الجملة اللي بين القوسين اللي بتقول إن الراس محذوفة.</div>
+            <div class="timeline-step"><div class="timeline-circle">04</div>لو الأداة طلعت الصورة بنسبة غلط، جرب تطلب منها <code>ultra-wide 3:2 aspect ratio</code>.</div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-char-sheet">
+            بيطلع شيت مرجعي موحد الإضاءة والمقاس تقدر تستخدمه في تثبيت الشخصية عبر مشاهد متعددة.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-char-sheet', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-char-sheet')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 05. تأثيرات وإعلانات (الأقسام 09 و 11 و 12) -->
+    <!-- ========================================== -->
+    <section id="view-effects" class="tab-section" data-section-name="تأثيرات وإعلانات">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>مكتبة التأثيرات الإعلانية والتكوين</h1>
+            <p>تأثيرات السوائل والأقمشة بمستويات (SUBTLE / MEDIUM / HERO) وقوالب البوسترات الإعلانية المحترفة.</p>
+          </div>
+          <div class="giant-frame-num">05</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>SUBTLE</span>
+          <div class="light-meter-ticks"></div>
+          <span>MEDIUM</span>
+          <div class="light-meter-ticks"></div>
+          <span>HERO</span>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">05.1</span>
+        <h2 class="subsection-title">مستويات التأثير الإعلاني الثلاثة وقوالب التكوين</h2>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <!-- Water Droplets 9.1 -->
+        <article class="contact-card" id="card-fx-water" data-category="تأثيرات السوائل" data-frame="No. 16">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تأثيرات السوائل</span>
+              <span class="frame-no-mono">No. 16</span>
+            </div>
+            <h3 class="frame-title">قطرات الماء والندى على المنتج (Water Droplets 9.1)</h3>
+            <p class="frame-desc">يضيف قطرات ندى طبيعية تتبع انحناء العبوة مع انكسار الضوء بدون تغطية اللوجو.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-fx-water">
+            <div class="prompt-content" id="p-fx-water">Edit the attached image. Add water droplets to [TARGET: the lower half of the product body]. Light source from [LIGHT DIRECTION] must create highlights and tiny refractions in each drop. Level: SUBTLE = a few fine droplets, mostly small, irregular. MEDIUM = scattered droplets of mixed sizes with a few short running drops. HERO = dense droplets with large glossy drops and long running streaks covering most of the body. Droplets must follow the surface curvature and never hide the label or logo. Keep [KEEP CLEAR] sharp and unobstructed.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-fx-water', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-fx-water">
+            اختار مستوى واحد (SUBTLE أو MEDIUM أو HERO) وامسح المستويين التانيين قبل ما تبعت البرومت.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-fx-water', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-fx-water')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Splash Effects 9.1 -->
+        <article class="contact-card" id="card-fx-splash" data-category="تأثيرات السوائل" data-frame="No. 17">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تأثيرات السوائل</span>
+              <span class="frame-no-mono">No. 17</span>
+            </div>
+            <h3 class="frame-title">طرطشة وسوائل محيطة (Splash Effects 9.1)</h3>
+            <p class="frame-desc">حركة سوائل مجمدة بسرعة غالق عالية (مياه، حليب، عصير، زيت) حول قاعدة المنتج.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-fx-splash">
+            <div class="prompt-content" id="p-fx-splash">Edit the attached image. Add a splash of [WATER / MILK / OIL / JUICE] at [TARGET]. Level: SUBTLE = a small gentle splash crown at the base. MEDIUM = a clear splash arc on one side with flying droplets. HERO = a dynamic splash surrounding the product at frozen-motion shutter speed with a large curved liquid shape. Liquid must look real: translucent, with refraction, reflections and thin liquid edges. Product stays dry above the splash line. Keep label and logo unaffected.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-fx-splash', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-fx-splash">
+            بيحافظ على جفاف العبوة فوق خط الطرطشة عشان الليبل يفضل مقروء ونظيف.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-fx-splash', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-fx-splash')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Negative Space Layout -->
+        <article class="contact-card" id="card-fx-negspace" data-category="تكوين إعلاني" data-frame="No. 18">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تكوين إعلاني</span>
+              <span class="frame-no-mono">No. 18</span>
+            </div>
+            <h3 class="frame-title">قالب المساحة السلبية للنصوص (Negative Space)</h3>
+            <p class="frame-desc">بيحط المنتج في تلت الكادر ويسيب الباقي نظيف عشان تكتب فيه الكوبي والشعار براحتك.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-fx-negspace">
+            <div class="prompt-content" id="p-fx-negspace">Product on the [LEFT/RIGHT] third of the frame, occupying about 35% of the frame width. The opposite 40% of the frame is a clean, calm, low-detail area of [BACKGROUND TONE] for text. No props, shadows or highlights entering that area.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-fx-negspace', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-fx-negspace">
+            مثالي لتصميمات السوشيال ميديا والبانرات اللي بتحتاج مساحة هادية للكتابة بالعربي أو الإنجليزي.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-fx-negspace', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-fx-negspace')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Text Safe Zones -->
+        <article class="contact-card" id="card-fx-safezone" data-category="تكوين إعلاني" data-frame="No. 19">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تكوين إعلاني</span>
+              <span class="frame-no-mono">No. 19</span>
+            </div>
+            <h3 class="frame-title">قالب المناطق الآمنة (Text Safe Zones 4:5 / 9:16)</h3>
+            <p class="frame-desc">بيسيب مساحة 14% فوق و20% تحت فاضيين عشان زراير وتطبيقات إنستجرام متغطيش على منتجك.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-fx-safezone">
+            <div class="prompt-content" id="p-fx-safezone">Compose for a [4:5 / 9:16] layout with safe zones: keep important content inside central 80% of frame. Reserve top 14% for headline and bottom 20% for call to action, clean low-detail tone with no strong shadows. No text generated in image.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-fx-safezone', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-fx-safezone">
+            بيمنع الموديل من إنه يولّد حروف مشوهة جوه الصورة ويسيبلك المساحة جاهزة للتصميم.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-fx-safezone', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-fx-safezone')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 06. السياق المصري (Section 14) -->
+    <!-- ========================================== -->
+    <section id="view-egypt" class="tab-section" data-section-name="السياق المصري">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>السياق المصري والعربي الواقعي (Local Context)</h1>
+            <p>البلوكات العادية بتطلع صور شكلها أوروبي أو معقم زيادة. هنا السر: <strong>ناس + مكان + ضوء مصري حقيقي</strong> بدون أهرامات وجمال مصطنعة!</p>
+          </div>
+          <div class="giant-frame-num">06</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>CAIRO</span>
+          <div class="light-meter-ticks"></div>
+          <span>PORTRA 400</span>
+          <div class="light-meter-ticks"></div>
+          <span>35MM</span>
+        </div>
+      </div>
+
+      <div class="subsection-header">
+        <span class="subsection-num">06.1</span>
+        <h2 class="subsection-title">عبارات وصفية جاهزة للدمج (Ready-to-Use Phrases)</h2>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <!-- People Phrases -->
+        <article class="contact-card" id="card-egy-people" data-category="السياق المصري" data-frame="No. 20">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">الناس والملامح</span>
+              <span class="frame-no-mono">No. 20</span>
+            </div>
+            <h3 class="frame-title">وصف الملامح والشخصيات المصرية الحقيقية</h3>
+            <p class="frame-desc">عبارات جاهزة لوصف البشرة القمحية والملابس اليومية الطبيعية بدون كليشيهات.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-egy-people">
+            <div class="prompt-content" id="p-egy-people">Egyptian woman in her early 30s with wheat-toned skin and dark brown eyes, wearing a plain cotton hijab and a linen shirt; Egyptian man in his 40s with short dark hair, light stubble and a worn polo shirt; elderly Egyptian shopkeeper with deep laugh lines</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-egy-people', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-egy-people">
+            انسخ الجزء المناسب لشخصيتك وحطه في خانة الـ Subject في بداية البرومت.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-egy-people', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-egy-people')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Places Phrases -->
+        <article class="contact-card" id="card-egy-places" data-category="السياق المصري" data-frame="No. 21">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">الأماكن الحقيقية</span>
+              <span class="frame-no-mono">No. 21</span>
+            </div>
+            <h3 class="frame-title">وصف الشوارع والبيوت والقهوة البلدي</h3>
+            <p class="frame-desc">القاهرة التاريخية، بلكونات الشقق، القهوة البلدي، وكورنيش إسكندرية.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-egy-places">
+            <div class="prompt-content" id="p-egy-places">a narrow street in Islamic Cairo with mashrabiya balconies and weathered stone; a Cairo apartment balcony with potted plants and a laundry line; a traditional ahwa with small tea glasses and wooden chairs on the sidewalk; Alexandria Corniche with peeling paint on the buildings; a rooftop in downtown Cairo with water tanks and satellite dishes</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-egy-places', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-egy-places">
+            بتدي خلفية مصرية صميمة من غير ما الموديل يحط أهرامات أو جمال في وسط الشارع.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-egy-places', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-egy-places')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Local Light Phrases -->
+        <article class="contact-card" id="card-egy-light" data-category="السياق المصري" data-frame="No. 22">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">الضوء المحلي</span>
+              <span class="frame-no-mono">No. 22</span>
+            </div>
+            <h3 class="frame-title">طبيعة الشمس والإضاءة في مصر</h3>
+            <p class="frame-desc">شمس الظهر القوية، ساعة الغروب الدافئة، وإضاءة المحلات بالليل.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-egy-light">
+            <div class="prompt-content" id="p-egy-light">strong dry midday sun with hard shadows and warm dust in the air; soft golden hour light with warm sand-colored reflections; hazy pale-sky afternoon; warm tungsten shop light at night</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-egy-light', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-egy-light">
+            الضوء في مصر بتميزه نغمة دافئة وانعكاسات رملية خفيفة بتفرق جداً عن الإضاءة الأوروبية الزرقاء.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-egy-light', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-egy-light')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Environment Props -->
+        <article class="contact-card" id="card-egy-props" data-category="السياق المصري" data-frame="No. 23">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">تفاصيل البيئة</span>
+              <span class="frame-no-mono">No. 23</span>
+            </div>
+            <h3 class="frame-title">تفاصيل الشارع المصري الدقيقة</h3>
+            <p class="frame-desc">البلاط الموزاييك، الفوانيس النحاس، الشيش الخشب، قطط الشارع، واليفط المموهة.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-egy-props">
+            <div class="prompt-content" id="p-egy-props">tuk-tuk, mosaic tiles, brass lanterns, wooden shutters, street cats, dust on parked cars, electric wires crossing the street, hand-painted shop signs blurred and unreadable</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-egy-props', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-egy-props">
+            إضافة تفصيلة أو اتنين من دول في الخلفية بتخلي الصورة تنطق بالروح المصرية الحقيقية.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-egy-props', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-egy-props')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Full Egyptian Ahwa Portrait -->
+        <article class="contact-card full-span" id="card-egypt-ahwa" data-category="السياق المصري" data-frame="No. 24">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">السياق المصري</span>
+              <span class="frame-no-mono">No. 24</span>
+            </div>
+            <h3 class="frame-title">بورتيريه مصري حقيقي على قهوة بلدي (Section 14.4)</h3>
+            <p class="frame-desc">برومت كامل جاهز يجمع الملامح المصرية والقهوة البلدي وإضاءة العصر الدافئة على فيلم Kodak Portra 400.</p>
+          </div>
+
+          <div class="viewfinder-wrap" id="vf-egypt-ahwa">
+            <div class="prompt-content" id="p-egypt-ahwa">Candid editorial portrait of an Egyptian woman in her early 30s with wheat-toned skin and dark brown eyes, wearing a plain cotton hijab and a linen shirt, sitting at a traditional ahwa with a small tea glass in front of her, natural skin texture with visible pores, subtle under-eye shadows, slightly asymmetrical features, relaxed natural expression. Soft warm afternoon light from the street side, shot on Sony A7R IV, 85mm f/1.8, ISO 200, shallow depth of field, creamy bokeh with wooden chairs and a blurred street behind, Kodak Portra 400 film look, subtle film grain, unretouched RAW photo. It must look like a real photograph. Avoid and exclude: plastic skin, airbrushed, perfect symmetry, doll-like face, oversaturated, distorted hands, extra fingers, readable fake text, watermark.</div>
+            <div class="viewfinder-fade">
+              <button type="button" class="read-all-btn" onclick="toggleExpand('vf-egypt-ahwa', this)">اقرأ الكل</button>
+            </div>
+          </div>
+
+          <div class="frame-details-drawer" id="det-egypt-ahwa">
+            مثال تطبيقي كامل لمعادلة الـ 10 أجزاء مطبقة على البيئة المصرية المحلية.
+          </div>
+
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-egypt-ahwa', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-egypt-ahwa')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 07. القاموس الإنجليزي بالمصري -->
+    <!-- ========================================== -->
+    <section id="view-dict" class="tab-section" data-section-name="القاموس">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>قاموس المصطلحات الإنجليزية بالمصري</h1>
+            <p>كل مصطلح تقني في الدليل مشروح بتشبيه من الحياة عشان تفهمه وماتقفش قدامه.</p>
+          </div>
+          <div class="giant-frame-num">07</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>RAW</span>
+          <div class="light-meter-ticks"></div>
+          <span>BOKEH</span>
+          <div class="light-meter-ticks"></div>
+          <span>RIM LIGHT</span>
+        </div>
+      </div>
+
+      <div class="contact-sheet-grid">
+        <!-- Dict 1: RAW Photograph -->
+        <article class="contact-card" id="card-dict-raw" data-category="القاموس" data-frame="No. 25">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح كاميرا</span>
+              <span class="frame-no-mono">No. 25</span>
+            </div>
+            <h3 class="frame-title">RAW Photograph</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> زي العصير الفريش اللي لسه معصور من غير سكر ولا مواد حافظة.. لقطة خام زي ما سنسور الكاميرا شافها بالظبط من غير تعديل كمبيوتر.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-raw">Photorealistic unretouched RAW photograph, authentic camera sensor capture</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-raw">
+            استخدام كلمة RAW photograph بيمنع الموديل من إضافة فلاتر تنعيم أو تجميل بلاستيكي.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-raw', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-raw')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Dict 2: Contact Shadow -->
+        <article class="contact-card" id="card-dict-shadow" data-category="القاموس" data-frame="No. 26">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح إضاءة</span>
+              <span class="frame-no-mono">No. 26</span>
+            </div>
+            <h3 class="frame-title">Contact Shadow (ظل التلامس)</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> الخط الأسود الصغير اللي بيبقى تحت كعب رجلك أو قعر الكوباية مباشرة.. هو ده اللي بيثبت الحاجة على الأرض وميخليهاش تطير في الهوا.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-shadow">natural tight dark contact shadow directly under the base where it touches the surface</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-shadow">
+            من أهم المصطلحات في تصوير المنتجات عشان تمنع إحساس إن المنتج مقصوص وملزوق.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-shadow', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-shadow')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Dict 3: Mask / Inpainting -->
+        <article class="contact-card" id="card-dict-mask" data-category="القاموس" data-frame="No. 27">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح تعديل</span>
+              <span class="frame-no-mono">No. 27</span>
+            </div>
+            <h3 class="frame-title">Mask / Inpainting</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> شريط لزق (تيب) النقاشين! بتلزقه على الحتة اللي مش عايز الذكاء الاصطناعي يرش بوية عليها عشان يحافظ على اللوجو والملامح الأصلية.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-mask">Edit only the masked region while keeping all unmasked areas 100% untouched and identical</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-mask">
+            لما تستخدم فرشة التحديد في أي أداة، اكتب الجملة دي عشان تأكد عليه ميخرجش برة التحديد.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-mask', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-mask')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Dict 4: Bokeh -->
+        <article class="contact-card" id="card-dict-bokeh" data-category="القاموس" data-frame="No. 28">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح عدسات</span>
+              <span class="frame-no-mono">No. 28</span>
+            </div>
+            <h3 class="frame-title">Bokeh & Shallow Depth of Field</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> العزل بتاع البورتيريه في الموبايل، لما تخلي وش صاحبك منور وحاد والشارع اللي وراه سايح كأنه كريمة ناعمة.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-bokeh">tack-sharp focus on the subject with natural shallow depth of field and creamy optical bokeh</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-bokeh">
+            استخدم معاه فتحة عدسة واسعة زي f/1.8 أو f/2.8 عشان العزل يطلع بصري وطبيعي مش ضباب كمبيوتر.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-bokeh', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-bokeh')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Dict 5: Peach Fuzz & Skin Pores -->
+        <article class="contact-card" id="card-dict-skin" data-category="القاموس" data-frame="No. 29">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح بورتيريه</span>
+              <span class="frame-no-mono">No. 29</span>
+            </div>
+            <h3 class="frame-title">Peach Fuzz & Skin Pores</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> الشعر الأصفر الصغير اللي على الخد ومسام البشرة العادية.. ده سر التفرقة بين بني آدم حقيقي وعروسة المانيكان البلاستيك.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-skin">natural skin texture with visible pores, fine peach fuzz, subtle blemishes and flyaway hairs</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-skin">
+            أساسي في أي صورة فيها أشخاص عشان تكسر نعومة الذكاء الاصطناعي المصطنعة.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-skin', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-skin')">تفاصيل</button>
+          </div>
+        </article>
+
+        <!-- Dict 6: Rim Light -->
+        <article class="contact-card" id="card-dict-rim" data-category="القاموس" data-frame="No. 30">
+          <div>
+            <div class="frame-meta-bar">
+              <span class="frame-cat-tag">مصطلح إضاءة</span>
+              <span class="frame-no-mono">No. 30</span>
+            </div>
+            <h3 class="frame-title">Rim Light</h3>
+            <p class="frame-desc"><strong>التشبيه المصري:</strong> خط نور رفيع جاي من ورا العنصر بيحدد حوافه ويفصله عن الخلفية الضلمة عشان ميبقاش لازق فيها.</p>
+          </div>
+          <div class="viewfinder-wrap expanded">
+            <div class="prompt-content" id="p-dict-rim">subtle rim light from behind separating the subject edges from the background</div>
+          </div>
+          <div class="frame-details-drawer" id="det-dict-rim">
+            بيدي عمق سينمائي فوري للمنتجات الإزاز والمعادن والبورتيريه.
+          </div>
+          <div class="frame-actions">
+            <button type="button" class="btn-copy-amber" onclick="copyPrompt('p-dict-rim', this)">انسخ البرومت</button>
+            <button type="button" class="btn-ghost-details" onclick="toggleDetails('det-dict-rim')">تفاصيل</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 08. قايمة التسليم (Checklist - Section 19) -->
+    <!-- ========================================== -->
+    <section id="view-checklist" class="tab-section" data-section-name="قايمة التسليم">
+      <div class="section-hero-strip">
+        <div class="section-hero-top">
+          <div class="section-hero-text">
+            <h1>قايمة المراجعة النهائية قبل التسليم (Final Pre-Delivery Checklist)</h1>
+            <p>الـ 14 نقطة المعتمدة في القسم 19. علم على كل نقطة تراجعها بعينك على زووم 100% عشان تضمن شغل معلمين يتبعت للمطبعة فوراً!</p>
+            <div class="golden-rule-banner" id="check-score-text">نسبة الجاهزية للتسليم: 0% (0 من 14)</div>
+          </div>
+          <div class="giant-frame-num">08</div>
+        </div>
+        <div class="light-meter-ruler" aria-hidden="true">
+          <span>ZOOM 100%</span>
+          <div class="light-meter-ticks"></div>
+          <span>HEX MATCH</span>
+          <div class="light-meter-ticks"></div>
+          <span>PRINT READY</span>
+        </div>
+      </div>
+
+      <div class="contact-card full-span" id="checklist-container" data-category="قايمة التسليم" data-frame="No. 31">
+        <div class="frame-meta-bar">
+          <span class="frame-cat-tag">فحص الجودة النهائي</span>
+          <span class="frame-no-mono">No. 31</span>
+        </div>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">1. المنتج مطابق للأصل في الشكل والنسب والألوان.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">2. الليبل واللوجو والنصوص مقروءة وصحيحة حرفياً بدون تشويه.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">3. الإضاءة موحدة وكل الظلال ماشية في اتجاه فيزيائي واحد.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">4. ظلال التلامس موجودة والمنتج مستقر وثابت على السطح مش طاير.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">5. الانعكاسات على الإزاز والمعدن متطابقة مع البيئة المحيطة.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">6. الحواف نظيفة ومفيش هالات بيضا أو سودة مكان القص.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">7. لا يوجد إيد أو سن أو عين مشوهة (لو في أشخاص في الصورة).</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">8. الحبيبات والحدة متسقة بين كل العناصر والخلفية.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">9. مساحة النص نظيفة ومناسبة بالنسبة المطلوبة للتصميم.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">10. مفيش عناصر عشوائية غريبة أو متكررة في الخلفية.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">11. درجات الألوان مطابقة لدرجات البراند (HEX Codes).</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">12. مراجعة بشرية كاملة على زووم 100% على شاشة نظيفة.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">13. مراجعة المقاس والأبعاد ونسبة العرض للارتفاع للمنصة المستهدفة.</span></button>
+        <button type="button" class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><span class="text">14. حفظ البرومت والـ Seed وأفضل النتائج في ملف العميل.</span></button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" role="status" aria-live="polite">
+    <span id="toast-msg">اتنسخ ✓</span>
+  </div>
+
+  <script>
+    // Application State
+    const state = {
+      tool: 'midjourney',
+      ratio: '4:5',
+      category: 'prod',
+      activeFixCmd: 'fix_prod',
+      activeTab: 'start',
+      savedScrollY: 0,
+      isSearching: false
+    };
+
+    // Category Core Templates (Sections 04 & 05)
+    const catTemplates = {
+      prod: "Professional commercial product photography, shot on Canon EOS R5 with a 100mm macro lens, f/8, ISO 100, large softbox lighting at 45 degrees with subtle rim light, soft realistic reflections and natural shadow falloff, visible material texture, true-to-life colors, subtle film grain, slight imperfections, unretouched RAW photo, high-end advertising quality.",
+      ppl: "Candid editorial portrait photograph, shot on Sony A7R IV with an 85mm f/1.8 lens, ISO 200, soft diffused window light, natural skin texture with visible pores, fine peach fuzz, subtle blemishes, under-eye shadows, flyaway hairs, slightly asymmetrical features, natural expression, Kodak Portra 400 film look, subtle film grain, unretouched RAW photo.",
+      food: "Professional food photography, shot on Canon EOS R5 with a 100mm macro lens, f/4, ISO 100, soft natural window light from the side, visible steam, natural moisture and glossy highlights, crumbs and small drips, slightly imperfect plating, fresh and appetizing true-to-life colors, shallow depth of field, subtle film grain, unretouched RAW photo.",
+      int: "Professional architectural interior photography, shot on Canon EOS R5 with a 24mm tilt-shift lens, f/11, ISO 100, natural daylight through windows balanced with soft ambient light, straight vertical lines, realistic materials, lived-in details, true-to-life colors, subtle film grain, unretouched RAW photo.",
+      white: "E-commerce catalog product photograph on a pure white seamless background, shot on Canon EOS R5 with a 100mm macro lens, f/11, ISO 100, two large softboxes at 45 degrees with a white fill card, even soft lighting, product centered with small margin, soft contact shadow directly under product, tack-sharp focus, unretouched RAW photo.",
+      jewel: "Luxury jewelry macro photograph, shot on Canon EOS R5 with a 100mm macro lens, f/11 with focus stacking, ISO 100, soft diffused light from large softbox above with small white cards, crisp specular highlights on polished metal, true gemstone color, fine micro-scratches, shallow depth of field, resting on dark slate, unretouched RAW photo.",
+      beauty: "Premium skincare and cosmetics product photograph, shot on Canon EOS R5 with a 100mm macro lens, f/8, ISO 100, soft window-style light from left with bounce card on right, soft gradient shadows, realistic frosted glass and matte plastic textures, product swatch with natural thickness, a few dew drops, unretouched RAW photo.",
+      drink: "Professional beverage photography, shot on Canon EOS R5 with a 100mm macro lens, f/5.6, ISO 100, strong backlight from behind through the glass with soft fill from front, natural condensation droplets, real ice cubes with air bubbles, a few fizz bubbles, unretouched RAW photo.",
+      fashion: "Editorial fashion photograph, shot on Sony A7R IV with an 85mm f/2 lens, ISO 200, soft open-shade daylight with subtle reflector fill, natural fabric behavior: realistic folds, seams and visible weave, garment fits naturally with wrinkles at joints, natural skin texture, Kodak Portra 400 film look, unretouched RAW photo.",
+      car: "Professional automotive photograph, shot on Canon EOS R5 with a 70-200mm lens at 135mm, f/5.6, ISO 100, low three-quarter front angle, golden hour sunlight from behind-left with soft reflections in paint, real tire texture and light road dust, contact shadows under tires, unretouched RAW photo.",
+      land: "Landscape travel photograph, shot on Sony A7R IV with a 24-70mm lens at 35mm, f/9, ISO 100, sharp from foreground to horizon, natural low-angle sunlight at golden hour with long soft shadows, visible terrain texture, subtle film grain, unretouched RAW photo.",
+      street: "Candid street documentary photograph, shot on Fujifilm X100V with a 35mm equivalent lens, f/4, ISO 400, available natural light with hard sunlight and deep real shadows, people caught mid-motion, natural clutter and textures of a real place, visible film grain, unretouched RAW photo."
+    };
+
+    const standardExcl = "cartoon, illustration, 3D render, CGI, digital art, painting, plastic skin, airbrushed, overly smooth, oversaturated, HDR look, glowing edges, perfect symmetry, watermark, text, logo, distorted hands, extra fingers, deformed, blurry";
+
+    // Section 03 Repair Commands Definitions
+    const fixCommands = {
+      fix_prod: {
+        title: "إصلاح عيب في منتج (FIX Product 3.1)",
+        desc: "بيصلح جزء مشوه في عبوة أو غطا أو بمب من غير ما يمس باقي التصميم.",
+        template: "Edit the attached image. The product has this defect: [DEFECT]. Correct only that part so it matches the real product shape in [REFERENCE]. Keep the label, logo, printed text, colors and overall proportions exactly as they are. Material must stay [MATERIAL].",
+        fields: [
+          { id: "DEFECT", label: "إيه العيب اللي في المنتج؟", default: "warped pump head and dented cap" },
+          { id: "REFERENCE", label: "الشكل الأصلي المفروض يبقى إيه؟", default: "straight cylindrical pump dispenser" },
+          { id: "MATERIAL", label: "الخامة الأصلية إيه؟", default: "frosted glass and matte black plastic" }
+        ]
+      },
+      fix_ppl: {
+        title: "إصلاح الأيدي والوش والأطراف (FIX Person 3.1)",
+        desc: "بيصلح صوابع زيادة أو سنان داخلة في بعضها مع الحفاظ التام على ملامح الوش.",
+        template: "Edit the attached image. Fix only [ISSUE] on the person. Keep face identity, expression, hairstyle, hair color, skin tone, clothing, pose and lighting exactly as they are. The corrected area must show natural anatomy with visible skin texture and pores. Do not smooth or retouch other areas.",
+        fields: [
+          { id: "ISSUE", label: "المشكلة فين بالظبط؟", default: "the left hand has six fingers and merged nails" }
+        ]
+      },
+      fix_bg: {
+        title: "إصلاح عيب في الخلفية (FIX Background 3.1)",
+        desc: "بيعالج خط رف مكسور أو جسم مكرر في الخلفية من غير ما يلمس بطل الصورة.",
+        template: "Edit the attached image. Fix only this background problem: [ISSUE] in the [TARGET_AREA]. Rebuild that area so it is coherent with the rest of the background: same perspective, depth of field and lighting. Do not touch foreground subject.",
+        fields: [
+          { id: "ISSUE", label: "إيه العيب اللي ورا؟", default: "warped crooked shelf line and blurry patch" },
+          { id: "TARGET_AREA", label: "فين مكانه في الكادر؟", default: "upper-right background behind the bottle" }
+        ]
+      },
+      blend: {
+        title: "دمج عنصر مقصوص داخل مشهد (BLEND 3.2)",
+        desc: "بياخد منتج مقصوص ويدخله جوه خلفية جاهزة مع تظبيط النور والظل والتلامس.",
+        template: "Use image 1 as exact reference for [ELEMENT] and image 2 as scene. Place [ELEMENT] in scene at [PLACEMENT], resting on [SURFACE]. Match scene: light comes from [LIGHT_DIRECTION], add consistent highlights, shadow falloff, soft natural contact shadow, and faint surface reflections. Do not alter scene background.",
+        fields: [
+          { id: "ELEMENT", label: "اسم العنصر اللي هيتم دمجه", default: "perfume bottle" },
+          { id: "PLACEMENT", label: "مكانه فين في المشهد؟", default: "center foreground" },
+          { id: "SURFACE", label: "واقف على سطح نوعه إيه؟", default: "dark rustic wooden table" },
+          { id: "LIGHT_DIRECTION", label: "مصدر نور المشهد الأصلي جاي منين؟", default: "window on the upper-left" }
+        ]
+      },
+      relight: {
+        title: "تعديل ومطابقة الإضاءة (RELIGHT 3.4)",
+        desc: "بيغير اتجاه الإضاءة على المنتج عشان تطابق الخلفية والظلال الجديدة.",
+        template: "Edit the attached image. Relight only [TARGET]. New light: [LIGHT_QUALITY] from [LIGHT_DIRECTION], color temperature [COLOR_TEMP]. Update highlights, shadow side, shadow softness, and contact shadow so everything is consistent with this one source. Keep product design and label identical.",
+        fields: [
+          { id: "TARGET", label: "العنصر اللي هيتعدل نوره", default: "the skincare bottle" },
+          { id: "LIGHT_QUALITY", label: "طبيعة النور الجديد", default: "soft diffused window light" },
+          { id: "LIGHT_DIRECTION", label: "اتجاه النور", default: "from the left at 45 degrees" },
+          { id: "COLOR_TEMP", label: "حرارة اللون (Warm / Cool)", default: "warm 3500K" }
+        ]
+      },
+      recolor: {
+        title: "تغيير لون جزء محدد (RECOLOR 3.5)",
+        desc: "بيغير لون غطا أو إزازة أو قميص مع الحفاظ التام على الظلال وخامة المنتج.",
+        template: "Edit the attached image. Change only the color of [TARGET] from [CURRENT_COLOR] to [NEW_COLOR]. Keep material finish, highlights, reflections, shadows and edges exactly as they are. Keep label, logo and all other colors unchanged: [PRESERVE].",
+        fields: [
+          { id: "TARGET", label: "الجزء المستهدف بالتلوين", default: "the bottle pump cap" },
+          { id: "CURRENT_COLOR", label: "لونه الحالي إيه؟", default: "white" },
+          { id: "NEW_COLOR", label: "عايز لونه الجديد إيه؟ (أو HEX)", default: "matte black (HEX #1C1C1C)" },
+          { id: "PRESERVE", label: "الحاجات الممنوع لونها يتغير", default: "printed logo and bottle glass body" }
+        ]
+      },
+      replace: {
+        title: "استبدال عنصر بآخر (REPLACE 3.6)",
+        desc: "بيشيل عنصر ويحط بداله عنصر جديد في نفس المكان والزاوية.",
+        template: "Edit the attached image. Replace [OLD_ELEMENT] with [NEW_ELEMENT] in the same position and at similar scale. The new element must match scene light from [LIGHT_DIRECTION], perspective and grain, with a natural contact shadow. Keep background and other objects unchanged.",
+        fields: [
+          { id: "OLD_ELEMENT", label: "العنصر القديم اللي هيتشال", default: "the plastic water cup" },
+          { id: "NEW_ELEMENT", label: "العنصر الجديد اللي هيتحط بداله", default: "a clear glass mug of black coffee" },
+          { id: "LIGHT_DIRECTION", label: "اتجاه الإضاءة في المشهد", default: "soft morning light from the left" }
+        ]
+      },
+      remove: {
+        title: "حذف عنصر وبناء السطح (REMOVE 3.7)",
+        desc: "بيشيل جسم مش مرغوب فيه ويكمل عروق الخشب أو الرخام مكانه طبيعي.",
+        template: "Edit the attached image. Remove [ELEMENT_TO_REMOVE] at [TARGET_AREA], including its shadow and reflection. Reconstruct the area behind it by naturally continuing the surrounding [SURFACE_PATTERN], with same perspective, texture, light and grain. Do not leave blur patches.",
+        fields: [
+          { id: "ELEMENT_TO_REMOVE", label: "الجسم اللي عايز تمسحه", default: "stray coffee spoon and wrapper" },
+          { id: "TARGET_AREA", label: "مكانه فين؟", default: "bottom-right corner" },
+          { id: "SURFACE_PATTERN", label: "السطح اللي تحته شكله إيه؟", default: "dark walnut wood grain" }
+        ]
+      },
+      expand: {
+        title: "توسيع الكادر (EXPAND / Outpainting 3.8)",
+        desc: "بيزود مساحة في الصورة يمين أو شمال من غير ما يكرر العناصر ولا يمس المركز.",
+        template: "Extend the attached image by adding [AMOUNT_DIRECTION]. Keep original image content unchanged at its original position and scale. Continue existing background, lighting direction, perspective and grain into the new area. Do not repeat existing objects.",
+        fields: [
+          { id: "AMOUNT_DIRECTION", label: "المساحة والاتجاه المطلوب", default: "30% more space on the right side" }
+        ]
+      },
+      upscale: {
+        title: "تحسين الدقة والتفاصيل (UPSCALE 3.9)",
+        desc: "بيزود مسام الجلد وخامات القماش من غير ما يخترع نصوص أو يشوه اللوجو.",
+        template: "Enhance resolution and fine detail of attached image without changing its content. Keep composition, colors, shapes, label text and faces exactly the same. Add only natural micro-detail: fabric weave, skin pores, material texture, surface grain. Do not smooth or over-sharpen.",
+        fields: []
+      },
+      match: {
+        title: "مطابقة إضاءة ولون بين صورتين (MATCH 3.10)",
+        desc: "بياخد مود النور والألوان من صورة مرجعية ويطبقها على صورتك.",
+        template: "Use image 1 as target to edit and image 2 as style reference. Match [WHAT_TO_MATCH] of image 2 onto image 1. Keep subject, composition, shapes, label, logo and text of image 1 unchanged. Do not copy layout of image 2.",
+        fields: [
+          { id: "WHAT_TO_MATCH", label: "عايز تطابق إيه بالظبط؟", default: "lighting direction, warm color temperature, contrast and film grain" }
+        ]
+      },
+      clean: {
+        title: "تنظيف الأتربة والشوائب (CLEAN 3.13)",
+        desc: "بيمسح فتل الهدوم وبصمات الصوابع الزيادة مع الحفاظ على ملمس الخامة.",
+        template: "Edit the attached image. Remove only small unwanted marks: dust specks, stray hairs, lint and tiny scratches that are not part of intended look, in [TARGET_AREA]. Keep intentional micro-texture, label details and natural material wear. Do not smooth surfaces.",
+        fields: [
+          { id: "TARGET_AREA", label: "المنطقة المستهدفة للتنظيف", default: "the glass surface and product label" }
+        ]
+      }
+    };
+
+    const ALL_TABS = ['start', 'wizard', 'repair', 'merge', 'effects', 'egypt', 'dict', 'checklist'];
+
+    // Apply 40ms stagger delay to cards inside a section
+    function applyStaggerAnimation(sectionEl) {
+      if (!sectionEl) return;
+      const cards = sectionEl.querySelectorAll('.contact-card');
+      cards.forEach((card, idx) => {
+        card.classList.remove('stagger-card');
+        void card.offsetWidth;
+        card.style.setProperty('--stagger-delay', `${idx * 40}ms`);
+        card.classList.add('stagger-card');
+      });
+    }
+
+    // Navigation Switcher
+    function switchTab(tabId, skipScrollTop) {
+      state.activeTab = tabId;
+      state.isSearching = false;
+
+      const sv = document.getElementById('view-search');
+      if (sv) sv.classList.remove('active-section');
+
+      const sb = document.getElementById('search-bar');
+      if (sb) sb.value = '';
+      const msb = document.getElementById('mobile-search-input');
+      if (msb) msb.value = '';
+
+      ALL_TABS.forEach(id => {
+        const view = document.getElementById('view-' + id);
+        if (view) {
+          if (id === tabId) {
+            view.classList.add('active-section');
+            applyStaggerAnimation(view);
+          } else {
+            view.classList.remove('active-section');
+          }
+        }
+        const btn = document.getElementById('nav-' + id);
+        if (btn) {
+          btn.classList.toggle('active', id === tabId);
+          if (id === tabId && btn.scrollIntoView) {
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }
+      });
+
+      if (!skipScrollTop) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Viewfinder Expand / Collapse ("اقرأ الكل")
+    function toggleExpand(vfId, btnEl) {
+      const vf = document.getElementById(vfId);
+      if (!vf) return;
+      const isExp = vf.classList.toggle('expanded');
+      if (btnEl) {
+        btnEl.textContent = isExp ? 'طوي النص' : 'اقرأ الكل';
+      }
+    }
+
+    // Toggle Card Details Drawer ("تفاصيل")
+    function toggleDetails(detId) {
+      const det = document.getElementById(detId);
+      if (!det) return;
+      det.classList.toggle('open');
+    }
+
+    // Wizard Functions
+    function selectTool(toolName, el) {
+      state.tool = toolName;
+      el.parentElement.querySelectorAll('.tool-chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      compileWizard();
+    }
+
+    function selectRatio(ratioVal, el) {
+      state.ratio = ratioVal;
+      el.parentElement.querySelectorAll('.badge-opt').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      compileWizard();
+    }
+
+    function selectCategory(catKey, el) {
+      state.category = catKey;
+      el.parentElement.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      compileWizard();
+    }
+
+    function compileWizard() {
+      const subjInput = document.getElementById('wiz-subject');
+      const subj = subjInput ? subjInput.value.trim() : '';
+      const base = catTemplates[state.category] || catTemplates['prod'];
+      const combined = subj ? `${subj}. ${base}` : base;
+
+      let finalPrompt = "";
+      const sdNeg = document.getElementById('sd-neg-box');
+      if (sdNeg) {
+        sdNeg.style.display = (state.tool === 'stablediffusion') ? 'block' : 'none';
+      }
+
+      if (state.tool === 'midjourney') {
+        finalPrompt = `${combined} --style raw --stylize 50 --ar ${state.ratio} --no ${standardExcl}`;
+      } else if (state.tool === 'flux') {
+        finalPrompt = `${combined} Highly authentic photograph, natural lighting, true optical depth of field, natural material textures, unretouched real camera sensor capture.`;
+      } else if (state.tool === 'stablediffusion') {
+        finalPrompt = `${combined}, (natural textures:1.2), (subtle film grain:1.1), RAW photo, high-end commercial capture`;
+      } else {
+        finalPrompt = `${combined} Avoid and exclude: cartoon, CGI, 3D render, plastic skin, airbrushed, oversaturated, blurry.`;
+      }
+
+      const out = document.getElementById('wiz-output');
+      if (out) out.textContent = finalPrompt;
+    }
+
+    // Repair Command Builder
+    function loadFixCommand(cmdKey, el) {
+      state.activeFixCmd = cmdKey;
+      if (el) {
+        el.parentElement.querySelectorAll('.tool-chip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+      }
+      const cmd = fixCommands[cmdKey];
+      const metaEl = document.getElementById('cmd-meta-desc');
+      if (metaEl) {
+        metaEl.innerHTML = `<h3 class="frame-title" style="margin-top:8px;">${cmd.title}</h3><p class="frame-desc">${cmd.desc}</p>`;
+      }
+
+      const container = document.getElementById('cmd-inputs-container');
+      if (container) {
+        container.innerHTML = "";
+        cmd.fields.forEach(f => {
+          const div = document.createElement('div');
+          div.className = "form-group";
+          div.innerHTML = `<label class="form-label">${f.label}:</label><input type="text" class="form-input cmd-field" data-id="${f.id}" value="${f.default}" oninput="updateFixPrompt()">`;
+          container.appendChild(div);
+        });
+      }
+
+      updateFixPrompt();
+    }
+
+    function updateFixPrompt() {
+      const cmd = fixCommands[state.activeFixCmd];
+      let res = cmd.template;
+      document.querySelectorAll('.cmd-field').forEach(inp => {
+        const id = inp.getAttribute('data-id');
+        const val = inp.value.trim() || `[${id}]`;
+        res = res.replace(new RegExp(`\\[${id}\\]`, 'g'), val);
+      });
+      const out = document.getElementById('cmd-output-text');
+      if (out) out.textContent = res;
+    }
+
+    // Checklist Logic
+    function toggleCheck(el) {
+      el.classList.toggle('done');
+      const box = el.querySelector('.check-box');
+      if (box) {
+        box.textContent = el.classList.contains('done') ? "✓" : "";
+      }
+      const total = document.querySelectorAll('.check-item').length;
+      const checked = document.querySelectorAll('.check-item.done').length;
+      const pct = Math.round((checked / total) * 100);
+      const scoreEl = document.getElementById('check-score-text');
+      if (scoreEl) {
+        scoreEl.textContent = `نسبة الجاهزية للتسليم: ${pct}% (${checked} من ${total})`;
+        scoreEl.style.borderColor = (pct === 100) ? 'var(--teal)' : 'var(--border-hover)';
+        scoreEl.style.color = (pct === 100) ? 'var(--teal)' : 'var(--text)';
+      }
+    }
+
+    // Copy Micro-Interaction: Viewfinder flashes white for 120ms, button turns teal and says "اتنسخ ✓" for 2 seconds (silent)
+    function copyPrompt(id, btnEl) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const text = el.innerText || el.textContent;
+
+      // Flash the parent viewfinder white for 120ms
+      const vf = el.closest('.viewfinder-wrap');
+      if (vf) {
+        vf.classList.add('camera-flash');
+        setTimeout(() => vf.classList.remove('camera-flash'), 120);
+      }
+
+      // Turn button teal and show "اتنسخ ✓" for 2 seconds
+      if (btnEl) {
+        const origText = btnEl.getAttribute('data-orig-text') || btnEl.textContent;
+        btnEl.setAttribute('data-orig-text', origText);
+        btnEl.classList.add('copied-teal');
+        btnEl.textContent = 'اتنسخ ✓';
+        setTimeout(() => {
+          btnEl.classList.remove('copied-teal');
+          btnEl.textContent = origText;
+        }, 2000);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('اتنسخ ✓');
+        }).catch(() => {
+          showToast('اتنسخ ✓');
+        });
+      } else {
+        showToast('اتنسخ ✓');
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      const m = document.getElementById('toast-msg');
+      if (!t || !m) return;
+      m.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    // Live Search Experience
+    let searchHitElements = [];
+
+    function escHtml(t) {
+      return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlightText(text, query) {
+      if (!query) return escHtml(text);
+      const escapedText = escHtml(text);
+      const escapedQuery = escHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escapedQuery})`, 'gi');
+      return escapedText.replace(regex, '<mark class="safelight-mark">$1</mark>');
+    }
+
+    function clearSearchAndRestore() {
+      const sb = document.getElementById('search-bar');
+      if (sb) sb.value = '';
+      const msb = document.getElementById('mobile-search-input');
+      if (msb) msb.value = '';
+
+      if (state.isSearching) {
+        state.isSearching = false;
+        const sv = document.getElementById('view-search');
+        if (sv) sv.classList.remove('active-section');
+        switchTab(state.activeTab, true);
+        window.scrollTo({ top: state.savedScrollY, behavior: 'auto' });
+      }
+    }
+
+    function openSearchResultLocation(hitIdx) {
+      const targetEl = searchHitElements[hitIdx];
+      if (!targetEl) return;
+      const sec = targetEl.closest('.tab-section');
+      const tabId = sec ? sec.id.replace('view-', '') : 'start';
+
+      state.isSearching = false;
+      switchTab(tabId, true);
+
+      requestAnimationFrame(() => {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetEl.classList.remove('pulse-locate');
+        void targetEl.offsetWidth;
+        targetEl.classList.add('pulse-locate');
+        setTimeout(() => {
+          targetEl.classList.remove('pulse-locate');
+        }, 3000);
+      });
+    }
+
+    function handleSearch(rawQuery) {
+      const q = rawQuery.trim().toLowerCase();
+      const sv = document.getElementById('view-search');
+
+      if (!q) {
+        clearSearchAndRestore();
+        return;
+      }
+
+      if (!state.isSearching) {
+        state.savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        state.isSearching = true;
+        ALL_TABS.forEach(id => {
+          const v = document.getElementById('view-' + id);
+          if (v) v.classList.remove('active-section');
+        });
+        if (sv) sv.classList.add('active-section');
+      }
+
+      const candidates = Array.from(document.querySelectorAll('.contact-card'))
+        .filter(c => !c.closest('#view-search'));
+
+      const matches = candidates.filter(c => c.textContent.toLowerCase().includes(q));
+      searchHitElements = matches;
+
+      const summaryEl = document.getElementById('search-summary');
+      if (summaryEl) {
+        summaryEl.textContent = matches.length
+          ? `لقيت ${matches.length} نتايج`
+          : 'مفيش نتايج، جرب كلمة تانية';
+      }
+
+      const resultsBox = document.getElementById('search-results');
+      if (!resultsBox) return;
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML = `
+          <div class="empty-film-state full-span">
+            <svg width="84" height="64" viewBox="0 0 84 64" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--amber); margin-bottom:12px;">
+              <rect x="4" y="6" width="76" height="52" rx="4"/>
+              <rect x="14" y="14" width="56" height="36" rx="2" stroke-dasharray="4 4"/>
+              <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+              <circle cx="20" cy="10" r="1.5" fill="currentColor"/>
+              <circle cx="74" cy="10" r="1.5" fill="currentColor"/>
+              <circle cx="10" cy="54" r="1.5" fill="currentColor"/>
+              <circle cx="20" cy="54" r="1.5" fill="currentColor"/>
+              <circle cx="74" cy="54" r="1.5" fill="currentColor"/>
+            </svg>
+            <h3 style="font-family:var(--font-title); color:var(--text); margin-bottom:4px;">مفيش نتايج، جرب كلمة تانية</h3>
+            <p style="font-size:0.88rem;">شريط النيجاتيف فاضي للكلمة دي.. جرب تبحث بكلمة زي "منتج" أو "إضاءة" أو "Canon" أو "قهوة".</p>
+          </div>
+        `;
+        return;
+      }
+
+      resultsBox.innerHTML = matches.map((card, idx) => {
+        const sec = card.closest('.tab-section');
+        const sectionName = sec ? (sec.getAttribute('data-section-name') || 'القسم') : 'المعمل';
+        const frameNo = card.getAttribute('data-frame') || `No. 0${idx + 1}`;
+        const titleEl = card.querySelector('.frame-title, .form-label');
+        const rawTitle = titleEl ? titleEl.textContent.trim() : sectionName;
+        const promptEl = card.querySelector('.prompt-content[id]');
+        const promptId = promptEl ? promptEl.id : '';
+        const rawPrompt = promptEl ? promptEl.textContent.trim() : '';
+
+        const descText = card.textContent.replace(/\s+/g, ' ').trim();
+        const matchPos = descText.toLowerCase().indexOf(q);
+        const start = Math.max(0, matchPos - 60);
+        const snippetRaw = descText.slice(start, matchPos + q.length + 120);
+
+        return `
+          <article class="contact-card">
+            <div>
+              <div class="frame-meta-bar">
+                <span class="frame-cat-tag">${escHtml(sectionName)}</span>
+                <span class="frame-no-mono">${escHtml(frameNo)}</span>
+              </div>
+              <h3 class="frame-title">${highlightText(rawTitle, q)}</h3>
+              <p class="frame-desc" style="margin-top:6px;">${start > 0 ? '… ' : ''}${highlightText(snippetRaw, q)} …</p>
+            </div>
+            ${rawPrompt ? `
+              <div class="viewfinder-wrap" id="vf-hit-${idx}">
+                <div class="prompt-content">${highlightText(rawPrompt, q)}</div>
+                <div class="viewfinder-fade">
+                  <button type="button" class="read-all-btn" onclick="toggleExpand('vf-hit-${idx}', this)">اقرأ الكل</button>
+                </div>
+              </div>
+            ` : ''}
+            <div class="frame-actions">
+              ${promptId ? `<button type="button" class="btn-copy-amber" onclick="copyPrompt('${promptId}', this)">انسخ البرومت</button>` : ''}
+              <button type="button" class="btn-ghost-details" onclick="openSearchResultLocation(${idx})">افتح مكانه</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Mobile Search & More Drawer Helpers
+    function openMobileSearch() {
+      const ov = document.getElementById('mobile-search-overlay');
+      if (ov) ov.classList.add('open');
+      const inp = document.getElementById('mobile-search-input');
+      if (inp) setTimeout(() => inp.focus(), 50);
+    }
+    function closeMobileSearch() {
+      const ov = document.getElementById('mobile-search-overlay');
+      if (ov) ov.classList.remove('open');
+    }
+    function syncMobileSearch(val) {
+      const sb = document.getElementById('search-bar');
+      if (sb) sb.value = val;
+      handleSearch(val);
+    }
+    function toggleMobileMore() {
+      const dr = document.getElementById('mobile-more-drawer');
+      if (dr) dr.classList.toggle('open');
+    }
+    function closeMobileMore() {
+      const dr = document.getElementById('mobile-more-drawer');
+      if (dr) dr.classList.remove('open');
+    }
+
+    // Theme Toggle ("Daylight" vs "Darkroom")
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      const target = (cur === 'dark') ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem('studio_theme', target);
+
+      const dial = document.getElementById('theme-btn');
+      if (dial) {
+        const rotated = dial.getAttribute('data-rotated') === 'true';
+        dial.setAttribute('data-rotated', (!rotated).toString());
+      }
+      updateThemeDialUI(target);
+    }
+
+    function updateThemeDialUI(theme) {
+      const textEl = document.getElementById('theme-text');
+      const iconEl = document.getElementById('theme-icon');
+      if (textEl) {
+        textEl.textContent = (theme === 'light') ? 'الغرفة المظلمة' : 'ضوء النهار';
+      }
+      if (iconEl) {
+        iconEl.innerHTML = (theme === 'light')
+          ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+          : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+      }
+    }
+
+    // Keyboard shortcut "/" focuses search bar
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const sb = document.getElementById('search-bar');
+        if (sb && sb.offsetParent !== null) {
+          sb.focus();
+        } else {
+          openMobileSearch();
+        }
+      } else if (e.key === 'Escape') {
+        closeMobileSearch();
+        closeMobileMore();
+      }
+    });
+
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      const bar = document.getElementById('progress-bar');
+      if (bar) bar.style.width = scrolled + '%';
+    });
+
+    // Init
+    (function init() {
+      const savedTheme = localStorage.getItem('studio_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeDialUI(savedTheme);
+      compileWizard();
+      loadFixCommand('fix_prod', null);
+      applyStaggerAnimation(document.getElementById('view-start'));
+    })();
+  </script>
+</body>
+</html>

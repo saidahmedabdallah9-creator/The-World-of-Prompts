@@ -1,0 +1,6 @@
+{
+  "name": "استوديو البرومتات بالمصري — الغرفة المظلمة",
+  "description": "مكتبة ومعمل تحميض البرومتات الاحترافية للصور الواقعية بالذكاء الاصطناعي باللهجة المصرية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
